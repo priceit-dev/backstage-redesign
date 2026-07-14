@@ -95,7 +95,7 @@
           </button>
           <button class="btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            수동 결제 추가
+            계좌이체 추가
           </button>
           <button class="btn btn-primary">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -118,136 +118,110 @@
         <table class="table">
           <thead>
             <tr>
-              <th style="width:40px;"><input type="checkbox" class="check"></th>
               <th>상태</th>
               <th>금액</th>
               <th>수강생</th>
               <th>코스</th>
               <th>결제수단</th>
               <th>결제일</th>
-              <th style="width:40px;"></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-success">완료</span></td>
               <td class="money">₩ 890,000</td>
               <td class="muted">김수현 · kim@example.com</td>
               <td>슈가보이 1기</td>
               <td class="muted">신용카드 (**** 4831)</td>
               <td class="muted">2026-07-08 10:42</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-success">완료</span></td>
               <td class="money">₩ 1,290,000</td>
               <td class="muted">이지훈 · lee@example.com</td>
               <td>정쌤 2기</td>
               <td class="muted">계좌이체</td>
               <td class="muted">2026-07-08 10:30</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-warning">대기</span></td>
               <td class="money">₩ 690,000</td>
               <td class="muted">박서연 · park@example.com</td>
               <td>일당백 3기</td>
               <td class="muted">가상계좌</td>
               <td class="muted">2026-07-08 10:10</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-danger">환불</span></td>
               <td class="money">₩ 890,000</td>
               <td class="muted">최민준 · choi@example.com</td>
               <td>슈가보이 1기</td>
               <td class="muted">신용카드 (**** 6442)</td>
               <td class="muted">2026-07-08 09:32</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-success">완료</span></td>
               <td class="money">₩ 1,290,000</td>
               <td class="muted">정하늘 · jung@example.com</td>
               <td>길잡 3기</td>
               <td class="muted">신용카드 (**** 8823)</td>
               <td class="muted">2026-07-08 08:15</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-success">완료</span></td>
               <td class="money">₩ 39,000</td>
               <td class="muted">한유진 · han@example.com</td>
               <td>톡딜머니 무료강의 VOD <span class="pill pill-purple" style="margin-left:6px; font-size:11px; padding:2px 8px;">VOD</span></td>
               <td class="muted">신용카드 (**** 1092)</td>
               <td class="muted">2026-07-07 22:41</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-neutral">부분환불</span></td>
               <td class="money">₩ 445,000<br><span style="font-size:11px;font-weight:400;color:var(--text-muted)">원 890,000 중 절반</span></td>
               <td class="muted">차진영 · cha@example.com</td>
               <td>최튼튼 특강</td>
               <td class="muted">신용카드 (**** 7712)</td>
               <td class="muted">2026-07-07 19:20</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-success">완료</span></td>
               <td class="money">₩ 1,290,000</td>
               <td class="muted">문지호 · moon@example.com</td>
               <td>정쌤 2기</td>
               <td class="muted">계좌이체</td>
               <td class="muted">2026-07-07 15:58</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-success">완료</span></td>
               <td class="money">₩ 690,000</td>
               <td class="muted">장수민 · jang@example.com</td>
               <td>일당백 3기</td>
               <td class="muted">신용카드 (**** 5023)</td>
               <td class="muted">2026-07-07 14:20</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-warning">대기</span></td>
               <td class="money">₩ 890,000</td>
               <td class="muted">신하영 · shin@example.com</td>
               <td>슈가보이 1기</td>
               <td class="muted">가상계좌</td>
               <td class="muted">2026-07-07 11:03</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-neutral">취소</span></td>
               <td class="money" style="text-decoration:line-through; color:var(--text-muted);">₩ 1,000</td>
               <td class="muted">김지은 · jn7277@hotmail.com</td>
               <td>[TEST] 테스트 코스 1기</td>
               <td class="muted">간편결제</td>
               <td class="muted">2026-07-09 23:23</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="check"></td>
+            <tr class="prow" onclick="location.href='payment-detail.html'">
               <td><span class="pill pill-neutral">취소</span></td>
               <td class="money" style="text-decoration:line-through; color:var(--text-muted);">₩ 15,000</td>
               <td class="muted">— (미인증)</td>
               <td class="muted">—</td>
               <td class="muted">간편결제</td>
               <td class="muted">2026-07-09 22:32</td>
-              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
             </tr>
           </tbody>
         </table>
