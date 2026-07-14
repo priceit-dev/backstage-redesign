@@ -117,10 +117,11 @@ svg{ display:block; }
 }
 .brand-logo{
   width:28px; height:28px; border-radius:8px;
-  background: linear-gradient(135deg, #227EF6, #7BADF7);
+  background:#1D1D1D;
   display:grid; place-items:center;
-  color:#fff; font-weight:700; font-size:14px;
+  color:#fff;
 }
+.brand-logo svg{ width:18px; height:18px; }
 .brand-name{ font-weight:700; font-size:15px; color:var(--text); letter-spacing:.02em; }
 .brand-sub{ font-size:11px; color:var(--primary); font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
 

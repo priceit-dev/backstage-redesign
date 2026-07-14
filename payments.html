@@ -6,6 +6,14 @@
 <title>ClassHub Backstage · 결제</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="_shared.css">
+<style>
+  .prow{ cursor:pointer; }
+  .prow:hover{ background:var(--surface-alt); }
+  .pay-search{ display:flex; align-items:center; gap:9px; margin-top:18px; max-width:440px; height:44px; padding:0 15px; border:1px solid var(--border); border-radius:10px; background:#fff; }
+  .pay-search svg{ width:16px; height:16px; color:var(--text-muted); flex-shrink:0; }
+  .pay-search input{ border:none; outline:none; background:none; font-size:14px; font-family:inherit; color:var(--text); width:100%; }
+  .pay-search input::placeholder{ color:var(--text-placeholder); }
+</style>
 </head>
 <body>
 
@@ -14,7 +22,7 @@
   <!-- SIDEBAR -->
     <aside class="sidebar">
     <div class="brand">
-      <div class="brand-logo">C</div>
+      <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z"/></svg></div>
       <div>
         <div class="brand-name">ClassHub</div>
         <div class="brand-sub">Backstage</div>
@@ -82,6 +90,12 @@
               <span>전체 상품 유형</span>
               <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
+            <div class="select-menu">
+              <div class="select-option selected"><span>전체 상품 유형</span><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="select-option"><span>정규강의 결제</span></div>
+              <div class="select-option"><span>프로그램 결제</span></div>
+              <div class="select-option"><span>VOD 다시보기</span></div>
+            </div>
           </div>
           <div class="select-wrap" style="width:160px">
             <div class="select">
@@ -104,7 +118,12 @@
         </div>
       </div>
 
-      <div class="card" style="margin-top:20px;">
+      <div class="pay-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="수강생 이름 · 이메일 · 주문번호로 검색">
+      </div>
+
+      <div class="card" style="margin-top:16px;">
         <!-- Filter tabs (Stripe style) -->
         <div class="tabs">
           <div class="tab active">전체 <span class="count">180</span></div>
