@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200, initial-scale=1">
+<title>셀렉트 컴포넌트 · 데모</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  body{ background:var(--bg); }
+  .wrap{ max-width:1200px; margin:0 auto; padding:48px 32px 400px; }
+  .hero{ margin-bottom:40px; }
+  .hero h1{ font-size:28px; font-weight:800; letter-spacing:-0.01em; margin:0 0 8px; }
+  .hero p{ color:var(--text-sub); font-size:14.5px; }
+  .grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:32px; }
+  .demo-col{ display:flex; flex-direction:column; gap:12px; }
+  .demo-label{
+    padding:14px 16px; background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; font-size:13px;
+  }
+  .demo-label .name{ font-weight:800; font-size:15px; color:var(--text); }
+  .demo-label .desc{ color:var(--text-muted); margin-top:4px; font-size:12.5px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>셀렉트 컴포넌트 · 3가지 상태</h1>
+    <p>Untitled UI 톤 참고 · 지금 시안 톤(파랑 primary)로 변환 · <b>_shared.css</b>에 정의됨</p>
+  </div>
+
+  <div class="grid">
+    <!-- State 1: Empty -->
+    <div class="demo-col">
+      <div class="demo-label">
+        <div class="name">1. 빈 상태 (플레이스홀더)</div>
+        <div class="desc">아직 선택 안 됨 · 회색 힌트 텍스트</div>
+      </div>
+      <div class="select-wrap">
+        <div class="select">
+          <span class="placeholder">팀원 선택</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 2: Selected, closed -->
+    <div class="demo-col">
+      <div class="demo-label">
+        <div class="name">2. 선택됨 (닫힘)</div>
+        <div class="desc">값 선택 완료 · 검정 텍스트</div>
+      </div>
+      <div class="select-wrap">
+        <div class="select">
+          <span>박서연</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 3: Selected, open -->
+    <div class="demo-col">
+      <div class="demo-label">
+        <div class="name">3. 열림 (포커스)</div>
+        <div class="desc">파란 링 + 드롭다운 · 선택 항목 우측 체크</div>
+      </div>
+      <div class="select-wrap">
+        <div class="select open">
+          <span>박서연</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="select-menu">
+          <div class="select-option">
+            <span>김수현</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option selected">
+            <span>박서연</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option">
+            <span>이지훈</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option">
+            <span>정하늘</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option">
+            <span>한유진</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option">
+            <span>문지호</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option">
+            <span>차진영</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="select-option">
+            <span>최민준</span>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:56px; padding:20px 24px; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+    <div style="font-size:15px; font-weight:800; margin-bottom:8px;">📐 스펙 요약</div>
+    <ul style="list-style:none; padding:0; margin:0; font-size:13.5px; color:var(--text-sub); line-height:2;">
+      <li>• 높이 <b>44px</b> · 라운드 <b>8px</b> · 보더 <b>#CFD6DF</b></li>
+      <li>• 플레이스홀더 <b>#A5ABBB</b> · 선택값 <b>#1D1D1D</b></li>
+      <li>• 포커스/열림: 보더 <b>파랑 #227EF6</b> + 4px 파랑 링</li>
+      <li>• 드롭다운: 라운드 8px · 그림자 · padding 4px · 옵션 padding 10×14 · 라운드 6px</li>
+      <li>• 선택된 옵션: 배경 <b>#F7F9FB</b> + 우측 <b>파란 체크 아이콘</b></li>
+      <li>• Hover 옵션: 배경 <b>#F7F9FB</b></li>
+    </ul>
+    <div style="margin-top:12px; font-size:12.5px; color:var(--text-muted);">클래스: <code>.select-wrap</code> · <code>.select</code> · <code>.select.open</code> · <code>.select-menu</code> · <code>.select-option</code> · <code>.select-option.selected</code></div>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

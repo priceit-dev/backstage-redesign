@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 매출</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .sl-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:20px; }
+  .sl-stat{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
+  .sl-stat .lbl{ font-size:12.5px; color:var(--text-sub); font-weight:600; }
+  .sl-stat .num{ font-size:24px; font-weight:800; color:var(--text); margin-top:8px; letter-spacing:-0.02em; }
+  .sl-stat .delta{ font-size:12.5px; font-weight:700; margin-top:6px; }
+  .sl-stat .delta.up{ color:var(--success-text); } .sl-stat .delta.down{ color:var(--danger-text); }
+  .sl-card{ margin-top:20px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px; }
+  .sl-card-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:8px; }
+  .sl-card-head h2{ font-size:16px; font-weight:800; color:var(--text); }
+  .sl-card-head p{ font-size:12.5px; color:var(--text-muted); margin-top:3px; }
+  .sl-range{ display:flex; gap:2px; background:var(--surface-alt); border-radius:999px; padding:3px; }
+  .sl-range button{ padding:6px 14px; border:none; background:transparent; border-radius:999px; font-size:13px; font-weight:600; color:var(--text-sub); cursor:pointer; font-family:inherit; }
+  .sl-range button.on{ background:#fff; color:var(--primary); box-shadow:var(--shadow-xs); }
+  .sl-legend{ display:flex; gap:18px; align-items:center; margin-top:10px; font-size:12.5px; color:var(--text-sub); }
+  .sl-legend .k{ display:inline-flex; align-items:center; gap:7px; }
+  .sl-legend .ln{ width:18px; height:0; border-top:2.5px solid var(--primary); }
+  .sl-legend .ln.dash{ border-top:2px dashed #9DC2F5; }
+  .info-banner{ display:flex; align-items:flex-start; gap:10px; margin-top:20px; padding:14px 16px; background:var(--info-soft); border:1px solid var(--info-line, #CFE0FB); border-radius:12px; font-size:13px; color:var(--info-text); }
+  .info-banner b{ font-weight:800; }
+  .sl-table th, .sl-table td{ padding:14px 20px; }
+  .sl-table th{ text-transform:none; letter-spacing:0; }
+  .money{ font-weight:700; color:var(--text); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div><div class="brand-name">ClassHub</div><div class="brand-sub">Backstage</div></div>
+    </div>
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+  <div>
+    <header class="topbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="검색"></div>
+      <div class="topbar-actions"><button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button><div class="avatar">YJ</div></div>
+    </header>
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">매출</h1>
+          <p class="page-sub">결제 데이터 기반 매출 추이 · 코스별 구성</p>
+        </div>
+        <div class="page-actions">
+          <div class="select-wrap" style="width:150px"><div class="select"><span>전체 코스</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="lbl">이번 달 매출</div><div class="num">17,500,000원</div><div class="delta up">▲ 12.9% 전월 대비</div></div>
+        <div class="sl-stat"><div class="lbl">이번 달 결제</div><div class="num">89<span style="font-size:13px; font-weight:600; color:var(--text-muted);">건</span></div><div class="delta up">▲ 8건</div></div>
+        <div class="sl-stat"><div class="lbl">누적 매출 (6개월)</div><div class="num">89,020,000원</div><div class="delta" style="color:var(--text-muted);">지난 기간 대비 ▲ 34%</div></div>
+        <div class="sl-stat"><div class="lbl">환불</div><div class="num">1,200,000원</div><div class="delta down">3건</div></div>
+      </div>
+
+      <div class="sl-card">
+        <div class="sl-card-head">
+          <div><h2>매출 리포트</h2><p>최근 매출 추이</p></div>
+          <div class="sl-range">
+            <button>12개월</button><button class="on">6개월</button><button>30일</button><button>7일</button>
+          </div>
+        </div>
+        <svg viewBox="0 0 1040 320" width="100%" style="display:block;">
+  <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#227EF6" stop-opacity="0.18"/><stop offset="100%" stop-color="#227EF6" stop-opacity="0"/></linearGradient></defs>
+  <line x1="64" y1="276.0" x2="1016" y2="276.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="276.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 0</text><line x1="64" y1="212.0" x2="1016" y2="212.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="212.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 5M</text><line x1="64" y1="148.0" x2="1016" y2="148.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="148.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 10M</text><line x1="64" y1="84.0" x2="1016" y2="84.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="84.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 15M</text><line x1="64" y1="20.0" x2="1016" y2="20.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="20.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 20M</text>
+  <path d="M 64.0,163.4 L 64.0,163.4 L 222.7,137.8 L 381.3,155.7 L 540.0,92.7 L 698.7,109.6 L 857.3,77.6 L 1016.0,52.0 L 1016.0,276.0 L 64.0,276.0 Z" fill="url(#area)"/>
+  <polyline points="64.0,199.2 222.7,173.6 381.3,192.8 540.0,155.7 698.7,169.8 857.3,135.2 1016.0,148.0" fill="none" stroke="#9DC2F5" stroke-width="2" stroke-dasharray="5 5"/>
+  <polyline points="64.0,163.4 222.7,137.8 381.3,155.7 540.0,92.7 698.7,109.6 857.3,77.6 1016.0,52.0" fill="none" stroke="#227EF6" stroke-width="2.5"/>
+  <circle cx="64.0" cy="163.4" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="222.7" cy="137.8" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="381.3" cy="155.7" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="540.0" cy="92.7" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="698.7" cy="109.6" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="857.3" cy="77.6" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="1016.0" cy="52.0" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/>
+  <line x1="540.0" y1="92.7" x2="540.0" y2="276" stroke="#C7D7EE" stroke-width="1" stroke-dasharray="3 3"/>
+  <circle cx="540.0" cy="92.7" r="5.5" fill="#227EF6" stroke="#fff" stroke-width="2.5"/>
+  <text x="64.0" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">2월</text><text x="222.7" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">3월</text><text x="381.3" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">4월</text><text x="540.0" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">5월</text><text x="698.7" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">6월</text><text x="857.3" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">7월</text><text x="1016.0" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">이번 달</text>
+  <g transform="translate(540.0,84.7)">
+    <rect x="-72" y="-42" width="144" height="46" rx="8" fill="#1D1D1D"/>
+    <text x="0" y="-25" font-size="11" fill="#B9BEC9" text-anchor="middle">2026년 5월</text>
+    <text x="0" y="-7" font-size="14" fill="#fff" font-weight="700" text-anchor="middle">₩ 14,320,000</text>
+  </g>
+</svg>
+        <div class="sl-legend"><span class="k"><span class="ln"></span>이번 기간</span><span class="k"><span class="ln dash"></span>지난 기간</span></div>
+      </div>
+
+      <div class="info-banner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div>이 그래프는 <b>결제 데이터</b>를 월별로 합산해 그린 거예요 (별도 개발 불필요). 코치별 정산금·세금계산서 등 <b>심화 정산</b>은 별도 정산 시스템 영역이라, 연동이 필요하면 지은님과 확인이 필요해요.</div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body" style="padding:0;">
+          <table class="table sl-table">
+            <thead><tr><th style="padding-left:20px;">코스</th><th>코치</th><th>결제 건수</th><th>매출</th><th>전월 대비</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:700;">톡딜머니</td>
+                <td>슈가보이</td>
+                <td class="num">17건</td>
+                <td class="money">2,850,000원</td>
+                <td style="font-weight:700; color:var(--success-text);">▲ 12%</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;">테무로드</td>
+                <td>길잡</td>
+                <td class="num">22건</td>
+                <td class="money">3,120,000원</td>
+                <td style="font-weight:700; color:var(--success-text);">▲ 8%</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;">점프투토스</td>
+                <td>포터</td>
+                <td class="num">31건</td>
+                <td class="money">4,180,000원</td>
+                <td style="font-weight:700; color:var(--success-text);">▲ 21%</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;">오토쿠팡</td>
+                <td>최튼튼</td>
+                <td class="num">11건</td>
+                <td class="money">1,640,000원</td>
+                <td style="font-weight:700; color:var(--danger-text);">▼ 5%</td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;">건국대 부설 정규과정</td>
+                <td>자체 상품</td>
+                <td class="num">8건</td>
+                <td class="money">2,400,000원</td>
+                <td style="font-weight:700; color:var(--text-muted);">— 0%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

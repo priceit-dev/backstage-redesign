@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 새 무료강의</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:14px; color:var(--text-sub); margin-bottom:16px; }
+  .breadcrumb a{ color:var(--text-sub); }
+  .breadcrumb a:hover{ color:var(--primary); }
+  .breadcrumb .sep{ color:var(--text-muted); }
+
+  .form-layout{
+    display:grid; grid-template-columns: 240px 1fr; gap:32px;
+    margin-top:24px;
+  }
+  .steps{
+    position:sticky; top:96px; align-self:start;
+    display:flex; flex-direction:column; gap:2px;
+    padding:8px 0;
+  }
+  .steps a{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 14px; border-radius:8px;
+    color:var(--text-sub); font-size:14px; font-weight:500;
+    text-decoration:none; transition:.12s;
+  }
+  .steps a:hover{ background:var(--surface-alt); color:var(--text); }
+  .steps a.active{ background:var(--primary-soft); color:var(--primary); font-weight:700; }
+  .steps a .n{
+    width:24px; height:24px; border-radius:50%;
+    background:var(--surface-alt); color:var(--text-muted);
+    display:grid; place-items:center; font-size:12px; font-weight:700;
+    flex-shrink:0;
+  }
+  .steps a.active .n{ background:var(--primary); color:#fff; }
+
+  .form-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    overflow:hidden;
+  }
+  .form-sec{ padding:28px 32px; border-bottom:1px solid var(--border); }
+  .form-sec:last-of-type{ border-bottom:none; }
+  .form-sec-head{ margin-bottom:20px; }
+  .form-sec-head h2{ font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .form-sec-head p{ font-size:13.5px; color:var(--text-sub); margin-top:4px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .form-row.single{ grid-template-columns:1fr; }
+  .form-row.triple{ grid-template-columns:1fr 1fr 1fr; }
+  .form-row:last-child{ margin-bottom:0; }
+
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field-label{ font-size:14px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:6px; }
+  .field-label .req{ color:var(--highlight); font-weight:700; }
+  .field-label .opt{ color:var(--text-muted); font-weight:500; font-size:12px; }
+  .field-hint{ font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+  .input, .select{
+    height:44px; padding:0 14px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:var(--surface); color:var(--text);
+    font-size:14.5px; font-family:inherit; outline:none;
+    box-shadow:var(--shadow-xs); transition:.15s;
+    width:100%;
+  }
+  .input::placeholder{ color:var(--text-placeholder); }
+  .input:focus, .select:focus{
+    border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring);
+  }
+  .select{ display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; }
+  .select .chev{ width:20px; height:20px; color:var(--text-sub); }
+
+  .textarea{
+    min-height:96px; padding:12px 14px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:var(--surface); font-size:14.5px; font-family:inherit;
+    outline:none; box-shadow:var(--shadow-xs); resize:vertical;
+    width:100%;
+  }
+  .textarea:focus{ border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring); }
+
+  .radio-group{ display:flex; gap:10px; flex-wrap:wrap; }
+  .radio-card{
+    flex:1; min-width:140px;
+    padding:14px 16px;
+    border:1.5px solid var(--border-strong); border-radius:10px;
+    cursor:pointer; transition:.12s;
+    display:flex; flex-direction:column; gap:0;
+    background:var(--surface);
+  }
+  .radio-card:hover{ border-color:var(--primary); }
+  .radio-card.selected{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-ring);
+  }
+  .radio-card .rc-title{ font-size:15px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .radio-card .rc-title .dot{
+    width:16px; height:16px; border-radius:50%; border:2px solid var(--border-strong);
+    flex-shrink:0; background:#fff;
+  }
+  .radio-card.selected .rc-title .dot{
+    border-color:var(--primary);
+    background:radial-gradient(circle, var(--primary) 40%, #fff 45%);
+  }
+  .radio-card .rc-desc{ font-size:12.5px; color:var(--text-muted); padding-left:24px; margin-top:4px; }
+
+  .toggle-row{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; }
+  .toggle-row + .toggle-row{ border-top:1px solid var(--border); }
+  .toggle-info .t-name{ font-size:14px; font-weight:600; }
+  .toggle-info .t-desc{ font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+  .toggle{
+    width:44px; height:26px; border-radius:999px;
+    background:#D0D5DD; position:relative; cursor:pointer;
+    flex-shrink:0; transition:.15s;
+  }
+  .toggle::after{
+    content:''; position:absolute; top:3px; left:3px;
+    width:20px; height:20px; background:#fff; border-radius:50%;
+    box-shadow:0 1px 3px rgba(0,0,0,.15); transition:.15s;
+  }
+  .toggle.on{ background:var(--primary); }
+  .toggle.on::after{ left:21px; }
+
+  .link-card{
+    padding:16px; border:1.5px dashed var(--border-strong); border-radius:10px;
+    display:flex; align-items:center; gap:12px; cursor:pointer;
+    transition:.12s; background:var(--surface-alt);
+  }
+  .link-card:hover{ border-color:var(--primary); background:var(--primary-soft); }
+  .link-card .plus{
+    width:36px; height:36px; border-radius:8px;
+    background:var(--surface); border:1px solid var(--border);
+    display:grid; place-items:center; color:var(--primary);
+    font-size:20px; font-weight:700; flex-shrink:0;
+  }
+  .link-card .info{ flex:1; }
+  .link-card .info .t{ font-size:14.5px; font-weight:600; }
+  .link-card .info .d{ font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+
+  .action-bar{
+    position:sticky; bottom:0; z-index:5;
+    background:var(--surface); border-top:1px solid var(--border);
+    padding:16px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-top:20px;
+    border-radius:0 0 12px 12px;
+  }
+  .action-bar-hint{ font-size:13px; color:var(--text-muted); }
+  .action-buttons{ display:flex; gap:8px; }
+  .helper-note{
+    padding:12px 14px; border-radius:8px;
+    background:var(--info-soft); color:var(--info-text);
+    font-size:13px; font-weight:500;
+    display:flex; gap:10px; align-items:flex-start;
+    margin-top:8px;
+  }
+  .helper-note .icon{ flex-shrink:0; font-size:16px; line-height:1.4; }
+
+  /* Cohort connect chips */
+  .cohort-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .cohort-chip{
+    padding:8px 14px; border:1.5px solid var(--border-strong); border-radius:999px;
+    font-size:14px; font-weight:600; color:var(--text-sub);
+    cursor:pointer; transition:.12s; background:var(--surface);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .cohort-chip:hover{ border-color:var(--primary); color:var(--primary); }
+  .cohort-chip.selected{
+    border-color:var(--primary); background:var(--primary-soft); color:var(--primary);
+  }
+  .cohort-chip .ck{ opacity:0; width:14px; }
+  .cohort-chip.selected .ck{ opacity:1; }
+
+  /* Custom date picker */
+  .dp{ position:relative; }
+  .dp-field{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 14px; height:44px; border:1px solid var(--border); border-radius:8px; background:var(--surface); cursor:pointer; font-size:14px; color:var(--text); box-sizing:border-box; }
+  .dp-field:hover{ border-color:var(--primary-line); }
+  .dp-field svg{ color:var(--text-muted); flex-shrink:0; }
+  .dp-pop{ position:absolute; top:calc(100% + 6px); left:0; z-index:50; width:300px; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:0 12px 32px rgba(16,24,40,.14); padding:16px; display:none; }
+  .dp-pop.open{ display:block; }
+  .dp-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .dp-title{ font-size:15px; font-weight:700; color:var(--text); }
+  .dp-navs{ display:flex; gap:2px; }
+  .dp-nav{ width:28px; height:28px; border:none; background:transparent; border-radius:6px; cursor:pointer; color:var(--text-sub); font-size:17px; line-height:1; display:grid; place-items:center; font-family:inherit; }
+  .dp-nav:hover{ background:var(--surface-alt); color:var(--text); }
+  .dp-week{ display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:2px; }
+  .dp-week span{ text-align:center; font-size:12px; color:var(--text-muted); font-weight:600; padding:6px 0; }
+  .dp-week span.sun{ color:var(--highlight); }
+  .dp-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+  .dp-day{ height:34px; border:none; background:transparent; border-radius:8px; cursor:pointer; font-size:13.5px; color:var(--text); font-family:inherit; }
+  .dp-day:hover{ background:var(--surface-alt); }
+  .dp-day.other{ color:var(--text-placeholder); }
+  .dp-day.today{ box-shadow:inset 0 0 0 1px var(--primary-line); }
+  .dp-day.sel{ background:var(--primary); color:#fff; font-weight:700; }
+  .dp-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:12px; border-top:1px solid var(--border); }
+  .dp-foot .lnk{ background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .dp-foot .acts{ display:flex; gap:6px; }
+  .dp-foot .acts button{ padding:7px 14px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid var(--border); background:#fff; color:var(--text-sub); font-family:inherit; }
+  .dp-foot .acts .ok{ background:var(--primary); border-color:var(--primary); color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <a href="courses.html">코스</a>
+        <span class="sep">›</span>
+        <a href="course-detail.html">톡딜머니</a>
+        <span class="sep">›</span>
+        <a href="#">무료강의</a>
+        <span class="sep">›</span>
+        <span style="color:var(--text)">새 무료강의</span>
+      </div>
+
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">새 무료강의</h1>
+          <p class="page-sub"><b>톡딜머니 2기 (모집중)</b> 앞단에 붙는 무료강의를 만듭니다 · 캘린더 · Tally 신청 폼 자동 생성</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn" onclick="location.href='course-detail.html'">취소</button>
+          <button class="btn">임시저장</button>
+          <button class="btn btn-primary" onclick="location.href='course-detail.html'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>무료강의 생성</button>
+        </div>
+      </div>
+
+      <div class="form-layout">
+        <!-- Side steps -->
+        <nav class="steps">
+          <a href="#s1" class="active"><span class="n">1</span> 기본 정보</a>
+          <a href="#s2"><span class="n">2</span> 일정</a>
+          <a href="#s3"><span class="n">3</span> 신청 폼</a>
+          <a href="#s5"><span class="n">4</span> 상태</a>
+        </nav>
+
+        <!-- Form -->
+        <div class="form-card">
+          <!-- Section 0: 이 기수의 기존 무료강의 (앵콜 맥락) -->
+          <section class="form-sec" id="s0">
+            <div class="form-sec-head">
+              <h2>이 기수의 기존 무료강의 <span style="color:var(--text-muted); font-size:13px; font-weight:400;">· 톡딜머니 2기</span></h2>
+              <p>2기엔 이미 아래 무료강의가 있어요. 지금 만드는 건 <b>앵콜·추가 회차</b>로 붙습니다.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div onclick="location.href='freeclass-detail.html'" style="display:flex; align-items:center; gap:12px; padding:13px 15px; border:1px solid var(--border); border-radius:10px; cursor:pointer;">
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:14px; font-weight:600; color:var(--text);">톡딜머니 2기 무료강의 <span style="font-size:12px; font-weight:500; color:var(--text-muted);">· 2026-07-15 20:00</span></div>
+                  <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Tally 신청폼 · 캘린더 연동됨 · 신청 48명</div>
+                </div>
+                <span class="pill pill-warning" style="flex-shrink:0;">모집중</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 1: 기본 정보 -->
+          <section class="form-sec" id="s1">
+            <div class="form-sec-head">
+              <h2>기본 정보</h2>
+              <p>무료강의 제목과 소개, 진행 방식을 정합니다</p>
+            </div>
+
+            <div class="form-row single">
+              <div class="field">
+                <label class="field-label">강의 제목 <span class="req">*</span></label>
+                <input class="input" type="text" placeholder='예) 카카오 톡딜 마진 계산법'>
+                <div class="field-hint">Tally 신청 폼·랜딩·캘린더에 표시</div>
+              </div>
+            </div>
+
+            <div class="form-row single">
+              <div class="field">
+                <label class="field-label">한 줄 소개 <span class="opt">(선택)</span></label>
+                <input class="input" type="text" placeholder="이 무료강의로 얻어갈 수 있는 것을 한 문장으로">
+                <div class="field-hint">랜딩·SNS 홍보용 서브 카피</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label class="field-label">회차 <span class="req">*</span></label>
+                <div class="radio-group">
+                  <div class="radio-card">
+                    <div class="rc-title"><span class="dot"></span> 신규</div>
+                    <div class="rc-desc">첫 무료강의</div>
+                  </div>
+                  <div class="radio-card selected">
+                    <div class="rc-title"><span class="dot"></span> 앵콜</div>
+                    <div class="rc-desc">같은 주제 재개</div>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label">진행 방식 <span class="req">*</span></label>
+                <div class="radio-group">
+                  <div class="radio-card selected">
+                    <div class="rc-title"><span class="dot"></span> 온라인 (Zoom)</div>
+                    <div class="rc-desc">화상 실시간</div>
+                  </div>
+                  <div class="radio-card">
+                    <div class="rc-title"><span class="dot"></span> 오프라인</div>
+                    <div class="rc-desc">현장 대면</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label class="field-label">참석 정원 <span class="req">*</span></label>
+                <input class="input" type="number" value="100" placeholder="예) 100">
+                <div class="field-hint">Zoom 방·현장 좌석 기준</div>
+              </div>
+              <div class="field">
+                <label class="field-label">참가비 <span class="opt">(무료 기본)</span></label>
+                <input class="input" type="text" value="0" placeholder="0 (무료)">
+                <div class="field-hint">소액 결제로 no-show 방지 시 입력 · 예) 5,000</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 2: 일정 -->
+          <section class="form-sec" id="s2">
+            <div class="form-sec-head">
+              <h2>일정</h2>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label class="field-label">진행 일자 <span class="req">*</span></label>
+                <div class="dp" id="dp-progdate">
+                  <div class="dp-field" onclick="dpToggle(event)">
+                    <span id="dp-label">2026. 08. 01.</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  </div>
+                  <div class="dp-pop" id="dp-pop">
+                    <div class="dp-head">
+                      <div class="dp-title" id="dp-title">2026년 8월</div>
+                      <div class="dp-navs">
+                        <button type="button" class="dp-nav" onclick="dpMove(-1)">‹</button>
+                        <button type="button" class="dp-nav" onclick="dpMove(1)">›</button>
+                      </div>
+                    </div>
+                    <div class="dp-week"><span class="sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+                    <div class="dp-grid" id="dp-grid"></div>
+                    <div class="dp-foot">
+                      <button type="button" class="lnk" onclick="dpToday()">오늘</button>
+                      <div class="acts"><button type="button" onclick="dpClose()">취소</button><button type="button" class="ok" onclick="dpConfirm()">확인</button></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label">시작 시간 <span class="req">*</span></label>
+                <input class="input" type="time" value="20:00">
+              </div>
+            </div>
+
+            <div class="form-row single">
+              <div class="field">
+                <label class="field-label">Zoom / 장소 링크 <span class="opt">(나중에 추가 가능)</span></label>
+                <input class="input" type="text" placeholder="https://zoom.us/... 또는 오프라인 주소">
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 3: 신청 폼 (Tally) 자동 연동 -->
+          <section class="form-sec" id="s3">
+            <div class="form-sec-head">
+              <h2>신청 폼 · 캘린더 연동 <span style="color:var(--success-text); font-size:13px; font-weight:600; background:var(--success-soft); padding:3px 8px; border-radius:999px; margin-left:6px;">자동</span></h2>
+              <p>무료강의 생성 시 <b>Tally 신청 폼</b>과 <b>캘린더 이벤트</b>가 함께 자동 생성돼요. 응답은 대시보드에 자동 수집.</p>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+              <div style="padding:16px 18px; border:1px solid var(--surface-alt); border-radius:12px; background:var(--bg);">
+                <div style="font-size:14.5px; font-weight:700; color:var(--text); margin-bottom:6px;">캘린더 이벤트 자동 생성</div>
+                <div style="font-size:12.5px; color:var(--text-sub);">일정에 이 무료강의가 등록됨</div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">예: "톡딜머니 무료강의 · 8/1 20:00"</div>
+              </div>
+              <div style="padding:16px 18px; border:1px solid var(--surface-alt); border-radius:12px; background:var(--bg);">
+                <div style="font-size:14.5px; font-weight:700; color:var(--text); margin-bottom:6px;">Tally 신청 폼 자동 생성</div>
+                <div style="font-size:12.5px; color:var(--text-sub);">신청 URL 자동 발급</div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">응답은 대시보드에 자동 수집</div>
+              </div>
+            </div>
+
+            <div class="form-row single">
+              <div class="field">
+                <label class="field-label">기존 Tally URL 연결 <span class="opt">(이미 만든 폼이 있을 때만)</span></label>
+                <input class="input" type="text" placeholder="비워두면 자동 생성 · 기존 폼 재사용 시에만 입력">
+              </div>
+            </div>
+
+            <div class="form-sec-head" style="margin-top:24px; margin-bottom:12px;">
+              <h2 style="font-size:15px;">자동 알림 설정</h2>
+              <p style="font-size:12.5px;">Tally 응답자에게 발송되는 알림</p>
+            </div>
+
+            <div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-name">신청 시 자동 알림톡</div>
+                  <div class="t-desc">신청 후 안내 문자·카카오 알림톡 자동 발송</div>
+                </div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-name">참석 하루 전 리마인더</div>
+                  <div class="t-desc">신청자에게 D-1 알림톡 자동 발송</div>
+                </div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-name">종료 후 후속 안내</div>
+                  <div class="t-desc">참석자에게 정규 코스(기수) 안내 자동 발송</div>
+                </div>
+                <div class="toggle on"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 4 (old s5): 상태 -->
+          <section class="form-sec" id="s5">
+            <div class="form-sec-head">
+              <h2>초기 상태</h2>
+              <p>무료강의 생성 시 시작 상태를 선택하세요</p>
+            </div>
+
+            <div class="radio-group">
+              <div class="radio-card">
+                <div class="rc-title"><span class="dot"></span> <span class="pill pill-purple">준비</span></div>
+                <div class="rc-desc">내부 세팅 중 (Tally 미공개)</div>
+              </div>
+              <div class="radio-card selected">
+                <div class="rc-title"><span class="dot"></span> <span class="pill pill-warning">모집중</span></div>
+                <div class="rc-desc">Tally 공개 · 신청 받는 중</div>
+              </div>
+              <div class="radio-card">
+                <div class="rc-title"><span class="dot"></span> <span class="pill pill-neutral">보류</span></div>
+                <div class="rc-desc">임시 저장 · 나중에 재개</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sticky action bar -->
+          <div class="action-bar">
+            <div class="action-bar-hint">
+              <b>Tally URL</b>은 나중에 추가해도 무료강의는 만들 수 있어요
+            </div>
+            <div class="action-buttons">
+              <button class="btn" onclick="location.href='course-detail.html'">취소</button>
+              <button class="btn">임시저장</button>
+              <button class="btn btn-primary" onclick="location.href='course-detail.html'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>무료강의 생성</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var view = { y:2026, m:7 };        // 0-indexed month (7 = 8월)
+    var sel  = { y:2026, m:7, d:1 };   // 확정된 선택
+    var pend = null;                    // 팝업 안에서 임시 선택
+    var pop = document.getElementById('dp-pop');
+    var pad = function(n){ return (n<10?'0':'')+n; };
+
+    function render(){
+      document.getElementById('dp-title').textContent = view.y + '년 ' + (view.m+1) + '월';
+      var first = new Date(view.y, view.m, 1).getDay();
+      var days  = new Date(view.y, view.m+1, 0).getDate();
+      var prevDays = new Date(view.y, view.m, 0).getDate();
+      var g = document.getElementById('dp-grid'); g.innerHTML = '';
+      var cur = pend || sel;
+      for (var i=first-1; i>=0; i--) g.appendChild(mk(prevDays-i, 'other'));
+      for (var d=1; d<=days; d++){
+        var cls = (cur && cur.y===view.y && cur.m===view.m && cur.d===d) ? 'sel' : '';
+        g.appendChild(mk(d, cls, d));
+      }
+      var trail = (7 - (first+days)%7) % 7;
+      for (var t=1; t<=trail; t++) g.appendChild(mk(t, 'other'));
+    }
+    function mk(text, cls, day){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'dp-day' + (cls ? ' '+cls : '');
+      b.textContent = text;
+      if (day) b.onclick = function(){ pend = { y:view.y, m:view.m, d:day }; render(); };
+      return b;
+    }
+    window.dpToggle = function(e){ if(e) e.stopPropagation(); pop.classList.toggle('open'); if(pop.classList.contains('open')){ pend=null; view={y:sel.y,m:sel.m}; render(); } };
+    window.dpClose  = function(){ pop.classList.remove('open'); pend=null; };
+    window.dpMove   = function(n){ view.m+=n; if(view.m<0){view.m=11;view.y--;} if(view.m>11){view.m=0;view.y++;} render(); };
+    window.dpToday  = function(){ view={y:sel.y,m:sel.m}; pend={y:sel.y,m:sel.m,d:sel.d}; render(); };
+    window.dpConfirm= function(){ if(pend) sel=pend; document.getElementById('dp-label').textContent = sel.y+'. '+pad(sel.m+1)+'. '+pad(sel.d)+'.'; dpClose(); };
+    document.addEventListener('click', function(e){ var dp=document.getElementById('dp-progdate'); if(dp && !dp.contains(e.target)) dpClose(); });
+  })();
+</script>
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

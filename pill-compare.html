@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>기수 pill 배치 옵션 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  body{ background:var(--bg); }
+  .wrap{ max-width:1400px; margin:0 auto; padding:48px 32px; }
+  .hero{ margin-bottom:32px; }
+  .hero h1{ font-size:28px; font-weight:800; letter-spacing:-0.01em; margin:0 0 8px; }
+  .hero p{ color:var(--text-sub); font-size:15px; }
+  .compare-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; margin-top:32px; }
+  .opt-wrap{ display:flex; flex-direction:column; gap:12px; }
+  .opt-label{
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    padding:16px; display:flex; flex-direction:column; gap:6px;
+  }
+  .opt-name{ font-size:16px; font-weight:800; color:var(--text); }
+  .opt-name .badge{ display:inline-block; padding:2px 8px; background:var(--primary); color:#fff; font-size:11px; font-weight:700; border-radius:999px; margin-left:6px; vertical-align:2px; }
+  .opt-desc{ font-size:12.5px; color:var(--text-sub); line-height:1.5; }
+  .opt-pros{ font-size:12px; color:var(--success-text); }
+  .opt-cons{ font-size:12px; color:var(--warning-text); }
+
+  /* Card base — from courses.html */
+  .course-card{
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:20px; display:flex; flex-direction:column; gap:14px;
+    transition:.15s;
+  }
+  .course-thumb{
+    height:120px; border-radius:8px; background:var(--primary-soft);
+    display:grid; place-items:center; color:var(--primary); font-size:36px; font-weight:700;
+    position:relative;
+  }
+  .course-thumb .thumb-hint{
+    position:absolute; bottom:8px; right:10px; font-size:11px; color:var(--text-muted);
+    background:rgba(255,255,255,.8); padding:2px 8px; border-radius:999px;
+  }
+  .course-body{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+  .course-body-left{ flex:1; min-width:0; }
+  .course-body-right{ display:flex; flex-direction:column; gap:6px; align-items:flex-end; flex-shrink:0; }
+  .course-name{ font-size:18px; font-weight:800; letter-spacing:-0.01em; }
+  .course-sub{ font-size:13px; color:var(--text-muted); margin-top:4px; }
+  .course-sub b{ color:var(--text-sub); font-weight:600; }
+  .course-foot{
+    margin-top:2px; padding-top:12px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--text-muted);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .course-foot a{ color:var(--primary); font-weight:600; font-size:13px; cursor:pointer; }
+
+  /* Option-specific */
+  .cohort-summary{ font-size:12px; color:var(--text-sub); line-height:1.6; }
+  .cohort-summary b{ color:var(--text); font-weight:700; }
+  .cohort-count-inline{
+    display:flex; align-items:center; gap:12px; font-size:12px; color:var(--text-sub);
+    padding-top:2px;
+  }
+  .cohort-count-inline .cnt{ display:inline-flex; align-items:center; gap:5px; }
+  .cohort-count-inline .cnt-dot{ width:6px; height:6px; border-radius:50%; }
+
+  /* Option C — dot history */
+  .cohort-dots{ display:flex; gap:8px; padding:6px 0; align-items:center; }
+  .cohort-dot{
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    cursor:pointer;
+  }
+  .cohort-dot .d{
+    width:14px; height:14px; border-radius:50%;
+    border:2px solid var(--neutral-soft); background:var(--neutral-soft);
+  }
+  .cohort-dot .n{ font-size:10px; color:var(--text-muted); font-weight:600; }
+  .cohort-dot.done .d{ background:var(--neutral-soft); border-color:var(--neutral-soft); }
+  .cohort-dot.live .d{ background:var(--success); border-color:var(--success); }
+  .cohort-dot.rec .d{ background:var(--warning); border-color:var(--warning); }
+  .cohort-dot.done .n{ color:var(--text-muted); }
+  .cohort-dot.live .n{ color:var(--success-text); font-weight:800; }
+  .cohort-dot.rec .n{ color:var(--warning-text); font-weight:800; }
+  .cohort-legend{
+    display:flex; gap:12px; font-size:11px; color:var(--text-muted); margin-top:4px;
+  }
+  .cohort-legend .lg-item{ display:flex; align-items:center; gap:4px; }
+  .cohort-legend .lg-dot{ width:8px; height:8px; border-radius:50%; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>기수 pill 배치 옵션 비교</h1>
+    <p>공통 케이스 · 5기까지 있는 코스 <b>톡딜머니</b> (5기 모집중 / 4기 강의중 / 1~3기 종료). 네 옵션 나란히 보고 골라주세요.</p>
+  </div>
+
+  <div class="compare-grid">
+
+    <!-- Option A -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name">A. 활성 기수만 <span class="badge">추천</span></div>
+        <div class="opt-desc">모집중·강의중 기수만 pill로. 지난 기수는 카드에서 숨김.</div>
+        <div class="opt-pros">✓ 카드 길이 항상 고정 (pill 최대 2개)</div>
+        <div class="opt-cons">✗ 지난 기수는 상세 페이지 가야 봄</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">톡딜머니</div>
+            <div class="course-sub"><b>슈가보이</b> · 카카오 톡딜 · 4주 코스</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+            <span class="pill pill-warning">5기 모집중</span>
+            <span class="pill pill-success">4기 강의중</span>
+          </div>
+        </div>
+        <div class="course-foot">
+          <span>총 5개 기수 · 지난 기수 3개 종료</span>
+          <a>기수 상세 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option B -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name">B. 최신 하나 + 카운트</div>
+        <div class="opt-desc">가장 최신 기수 pill 하나. 상태별 개수는 아래 줄에 인라인으로.</div>
+        <div class="opt-pros">✓ 심플. 카드 짧음. 히스토리 감이 옴</div>
+        <div class="opt-cons">✗ 강의중 기수를 pill로 못 봄. 인라인 텍스트로만</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">톡딜머니</div>
+            <div class="course-sub"><b>슈가보이</b> · 카카오 톡딜 · 4주 코스</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+            <span class="pill pill-warning">5기 모집중</span>
+          </div>
+        </div>
+        <div class="cohort-count-inline">
+          <span class="cnt"><span class="cnt-dot" style="background:var(--warning)"></span>모집중 <b>1</b></span>
+          <span class="cnt"><span class="cnt-dot" style="background:var(--success)"></span>강의중 <b>1</b></span>
+          <span class="cnt"><span class="cnt-dot" style="background:var(--text-muted)"></span>종료 <b>3</b></span>
+        </div>
+        <div class="course-foot">
+          <span>총 5개 기수 · 통산 수강생 168명</span>
+          <a>기수 상세 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option C -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name">C. 도트 히스토리</div>
+        <div class="opt-desc">기수를 도트로. 컬러로 상태 표시. Hover 시 툴팁으로 상세.</div>
+        <div class="opt-pros">✓ 5기 · 10기여도 가로로 나열. 히스토리 감이 좋음</div>
+        <div class="opt-cons">✗ 학습 필요 (색 의미). 라벨 없어서 처음엔 모를 수 있음</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">톡딜머니</div>
+            <div class="course-sub"><b>슈가보이</b> · 카카오 톡딜 · 4주 코스</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+          </div>
+        </div>
+        <div>
+          <div class="cohort-dots">
+            <div class="cohort-dot done" title="1기 종료"><div class="d"></div><div class="n">1</div></div>
+            <div class="cohort-dot done" title="2기 종료"><div class="d"></div><div class="n">2</div></div>
+            <div class="cohort-dot done" title="3기 종료"><div class="d"></div><div class="n">3</div></div>
+            <div class="cohort-dot live" title="4기 강의중"><div class="d"></div><div class="n">4기</div></div>
+            <div class="cohort-dot rec" title="5기 모집중"><div class="d"></div><div class="n">5기</div></div>
+          </div>
+          <div class="cohort-legend">
+            <span class="lg-item"><span class="lg-dot" style="background:var(--warning)"></span>모집중</span>
+            <span class="lg-item"><span class="lg-dot" style="background:var(--success)"></span>강의중</span>
+            <span class="lg-item"><span class="lg-dot" style="background:var(--neutral-soft); border:1px solid var(--border-strong)"></span>종료</span>
+          </div>
+        </div>
+        <div class="course-foot">
+          <span>총 5개 기수 · 통산 168명</span>
+          <a>기수 상세 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option D -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name">D. 최신 하나만</div>
+        <div class="opt-desc">가장 우선 상태 pill 하나. 나머지는 상세에서.</div>
+        <div class="opt-pros">✓ 가장 심플. 카드 매우 짧음</div>
+        <div class="opt-cons">✗ 강의중 기수 놓칠 수 있음. 정보 손실 큼</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">톡딜머니</div>
+            <div class="course-sub"><b>슈가보이</b> · 카카오 톡딜 · 4주 코스</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+            <span class="pill pill-warning">5기 모집중</span>
+          </div>
+        </div>
+        <div class="course-foot">
+          <span>총 5개 기수 · 통산 168명</span>
+          <a>기수 상세 →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Second row: Extreme case (10기까지 있는 코스) -->
+  <div class="hero" style="margin-top:64px;">
+    <h1 style="font-size:22px;">극단 케이스 · 10기까지 있는 인기 코스</h1>
+    <p>같은 옵션들의 카드가 10기 케이스에서 어떻게 보이는지 확인용</p>
+  </div>
+
+  <div class="compare-grid">
+
+    <!-- A 10기 -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name" style="font-size:14px;">A. 활성 기수만</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">일당백</div>
+            <div class="course-sub"><b>일당백</b> · 스마트스토어</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+            <span class="pill pill-warning">10기 모집중</span>
+            <span class="pill pill-success">9기 강의중</span>
+          </div>
+        </div>
+        <div class="course-foot">
+          <span>총 10개 기수 · 지난 기수 8개 종료</span>
+          <a>상세 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- B 10기 -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name" style="font-size:14px;">B. 최신 하나 + 카운트</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">일당백</div>
+            <div class="course-sub"><b>일당백</b> · 스마트스토어</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+            <span class="pill pill-warning">10기 모집중</span>
+          </div>
+        </div>
+        <div class="cohort-count-inline">
+          <span class="cnt"><span class="cnt-dot" style="background:var(--warning)"></span>모집중 <b>1</b></span>
+          <span class="cnt"><span class="cnt-dot" style="background:var(--success)"></span>강의중 <b>1</b></span>
+          <span class="cnt"><span class="cnt-dot" style="background:var(--text-muted)"></span>종료 <b>8</b></span>
+        </div>
+        <div class="course-foot">
+          <span>총 10개 기수 · 통산 418명</span>
+          <a>상세 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C 10기 -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name" style="font-size:14px;">C. 도트 히스토리</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">일당백</div>
+            <div class="course-sub"><b>일당백</b> · 스마트스토어</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+          </div>
+        </div>
+        <div>
+          <div class="cohort-dots" style="gap:6px;">
+            <div class="cohort-dot done"><div class="d"></div><div class="n">1</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">2</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">3</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">4</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">5</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">6</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">7</div></div>
+            <div class="cohort-dot done"><div class="d"></div><div class="n">8</div></div>
+            <div class="cohort-dot live"><div class="d"></div><div class="n">9기</div></div>
+            <div class="cohort-dot rec"><div class="d"></div><div class="n">10기</div></div>
+          </div>
+        </div>
+        <div class="course-foot">
+          <span>총 10개 기수 · 통산 418명</span>
+          <a>상세 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- D 10기 -->
+    <div class="opt-wrap">
+      <div class="opt-label">
+        <div class="opt-name" style="font-size:14px;">D. 최신 하나만</div>
+      </div>
+      <div class="course-card">
+        <div class="course-body">
+          <div class="course-body-left">
+            <div class="course-name">일당백</div>
+            <div class="course-sub"><b>일당백</b> · 스마트스토어</div>
+          </div>
+          <div class="course-body-right">
+            <span class="pill pill-info">정규강의</span>
+            <span class="pill pill-warning">10기 모집중</span>
+          </div>
+        </div>
+        <div class="course-foot">
+          <span>총 10개 기수 · 통산 418명</span>
+          <a>상세 →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

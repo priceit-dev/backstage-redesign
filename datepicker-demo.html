@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200, initial-scale=1">
+<title>달력 컴포넌트 · 데모</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  body{ background:var(--bg); }
+  .wrap{ max-width:1200px; margin:0 auto; padding:48px 32px 400px; }
+  .hero{ margin-bottom:40px; }
+  .hero h1{ font-size:28px; font-weight:800; letter-spacing:-0.01em; margin:0 0 8px; }
+  .hero p{ color:var(--text-sub); font-size:14.5px; }
+  .grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:32px; align-items:flex-start; }
+  .demo-col{ display:flex; flex-direction:column; gap:12px; }
+  .demo-label{
+    padding:14px 16px; background:var(--surface); border:1px solid var(--border);
+    border-radius:8px;
+  }
+  .demo-label .name{ font-weight:800; font-size:15px; color:var(--text); }
+  .demo-label .desc{ color:var(--text-muted); margin-top:4px; font-size:12.5px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>달력 컴포넌트 · Datepicker</h1>
+    <p>Native <code>&lt;input type="date"&gt;</code> 대체 · 파랑 primary 톤 · <b>_shared.css</b>에 정의됨</p>
+  </div>
+
+  <div class="grid">
+    <!-- 1. 오늘 하이라이트 (선택 안 됨) -->
+    <div class="demo-col">
+      <div class="demo-label">
+        <div class="name">1. 오늘 하이라이트만</div>
+        <div class="desc">아직 선택 안 됨 · 오늘(10일) 파란 텍스트</div>
+      </div>
+      <div class="datepicker">
+        <div class="datepicker-head">
+          <button class="datepicker-title">
+            <span>2026년 7월</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="datepicker-nav">
+            <button title="이전 달"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button title="다음 달"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="datepicker-weekdays">
+          <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+        <div class="datepicker-days">
+          <button class="datepicker-day other">28</button>
+          <button class="datepicker-day other">29</button>
+          <button class="datepicker-day other">30</button>
+          <button class="datepicker-day">1</button>
+          <button class="datepicker-day">2</button>
+          <button class="datepicker-day">3</button>
+          <button class="datepicker-day">4</button>
+          <button class="datepicker-day">5</button>
+          <button class="datepicker-day">6</button>
+          <button class="datepicker-day">7</button>
+          <button class="datepicker-day">8</button>
+          <button class="datepicker-day">9</button>
+          <button class="datepicker-day today">10</button>
+          <button class="datepicker-day">11</button>
+          <button class="datepicker-day">12</button>
+          <button class="datepicker-day">13</button>
+          <button class="datepicker-day">14</button>
+          <button class="datepicker-day">15</button>
+          <button class="datepicker-day">16</button>
+          <button class="datepicker-day">17</button>
+          <button class="datepicker-day">18</button>
+          <button class="datepicker-day">19</button>
+          <button class="datepicker-day">20</button>
+          <button class="datepicker-day">21</button>
+          <button class="datepicker-day">22</button>
+          <button class="datepicker-day">23</button>
+          <button class="datepicker-day">24</button>
+          <button class="datepicker-day">25</button>
+          <button class="datepicker-day">26</button>
+          <button class="datepicker-day">27</button>
+          <button class="datepicker-day">28</button>
+          <button class="datepicker-day">29</button>
+          <button class="datepicker-day">30</button>
+          <button class="datepicker-day">31</button>
+          <button class="datepicker-day other">1</button>
+          <button class="datepicker-day other">2</button>
+          <button class="datepicker-day other">3</button>
+          <button class="datepicker-day other">4</button>
+          <button class="datepicker-day other">5</button>
+          <button class="datepicker-day other">6</button>
+          <button class="datepicker-day other">7</button>
+          <button class="datepicker-day other">8</button>
+        </div>
+        <div class="datepicker-foot">
+          <button class="danger">삭제</button>
+          <button class="action">오늘</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 선택된 상태 (10일 파란 원) -->
+    <div class="demo-col">
+      <div class="demo-label">
+        <div class="name">2. 오늘 선택된 상태 <span style="color:var(--primary)">★</span></div>
+        <div class="desc">오늘(10일) 파란 원 배경 · 흰 텍스트</div>
+      </div>
+      <div class="datepicker">
+        <div class="datepicker-head">
+          <button class="datepicker-title">
+            <span>2026년 7월</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="datepicker-nav">
+            <button title="이전 달"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button title="다음 달"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="datepicker-weekdays">
+          <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+        <div class="datepicker-days">
+          <button class="datepicker-day other">28</button>
+          <button class="datepicker-day other">29</button>
+          <button class="datepicker-day other">30</button>
+          <button class="datepicker-day">1</button>
+          <button class="datepicker-day">2</button>
+          <button class="datepicker-day">3</button>
+          <button class="datepicker-day">4</button>
+          <button class="datepicker-day">5</button>
+          <button class="datepicker-day">6</button>
+          <button class="datepicker-day">7</button>
+          <button class="datepicker-day">8</button>
+          <button class="datepicker-day">9</button>
+          <button class="datepicker-day selected">10</button>
+          <button class="datepicker-day">11</button>
+          <button class="datepicker-day">12</button>
+          <button class="datepicker-day">13</button>
+          <button class="datepicker-day">14</button>
+          <button class="datepicker-day">15</button>
+          <button class="datepicker-day">16</button>
+          <button class="datepicker-day">17</button>
+          <button class="datepicker-day">18</button>
+          <button class="datepicker-day">19</button>
+          <button class="datepicker-day">20</button>
+          <button class="datepicker-day">21</button>
+          <button class="datepicker-day">22</button>
+          <button class="datepicker-day">23</button>
+          <button class="datepicker-day">24</button>
+          <button class="datepicker-day">25</button>
+          <button class="datepicker-day">26</button>
+          <button class="datepicker-day">27</button>
+          <button class="datepicker-day">28</button>
+          <button class="datepicker-day">29</button>
+          <button class="datepicker-day">30</button>
+          <button class="datepicker-day">31</button>
+          <button class="datepicker-day other">1</button>
+          <button class="datepicker-day other">2</button>
+          <button class="datepicker-day other">3</button>
+          <button class="datepicker-day other">4</button>
+          <button class="datepicker-day other">5</button>
+          <button class="datepicker-day other">6</button>
+          <button class="datepicker-day other">7</button>
+          <button class="datepicker-day other">8</button>
+        </div>
+        <div class="datepicker-foot">
+          <button class="danger">삭제</button>
+          <button class="action">오늘</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 미래 날짜 선택 (20일) -->
+    <div class="demo-col">
+      <div class="demo-label">
+        <div class="name">3. 미래 날짜 선택</div>
+        <div class="desc">오늘(10) 파란 텍스트 · 20일 파란 원 (선택됨)</div>
+      </div>
+      <div class="datepicker">
+        <div class="datepicker-head">
+          <button class="datepicker-title">
+            <span>2026년 7월</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="datepicker-nav">
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="datepicker-weekdays">
+          <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+        <div class="datepicker-days">
+          <button class="datepicker-day other">28</button>
+          <button class="datepicker-day other">29</button>
+          <button class="datepicker-day other">30</button>
+          <button class="datepicker-day">1</button>
+          <button class="datepicker-day">2</button>
+          <button class="datepicker-day">3</button>
+          <button class="datepicker-day">4</button>
+          <button class="datepicker-day">5</button>
+          <button class="datepicker-day">6</button>
+          <button class="datepicker-day">7</button>
+          <button class="datepicker-day">8</button>
+          <button class="datepicker-day">9</button>
+          <button class="datepicker-day today">10</button>
+          <button class="datepicker-day">11</button>
+          <button class="datepicker-day">12</button>
+          <button class="datepicker-day">13</button>
+          <button class="datepicker-day">14</button>
+          <button class="datepicker-day">15</button>
+          <button class="datepicker-day">16</button>
+          <button class="datepicker-day">17</button>
+          <button class="datepicker-day">18</button>
+          <button class="datepicker-day">19</button>
+          <button class="datepicker-day selected">20</button>
+          <button class="datepicker-day">21</button>
+          <button class="datepicker-day">22</button>
+          <button class="datepicker-day">23</button>
+          <button class="datepicker-day">24</button>
+          <button class="datepicker-day">25</button>
+          <button class="datepicker-day">26</button>
+          <button class="datepicker-day">27</button>
+          <button class="datepicker-day">28</button>
+          <button class="datepicker-day">29</button>
+          <button class="datepicker-day">30</button>
+          <button class="datepicker-day">31</button>
+          <button class="datepicker-day other">1</button>
+          <button class="datepicker-day other">2</button>
+          <button class="datepicker-day other">3</button>
+          <button class="datepicker-day other">4</button>
+          <button class="datepicker-day other">5</button>
+          <button class="datepicker-day other">6</button>
+          <button class="datepicker-day other">7</button>
+          <button class="datepicker-day other">8</button>
+        </div>
+        <div class="datepicker-foot">
+          <button class="danger">삭제</button>
+          <button class="action">오늘</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:56px; padding:20px 24px; background:var(--surface); border:1px solid var(--border); border-radius:12px;">
+    <div style="font-size:15px; font-weight:800; margin-bottom:8px;">📐 스펙 요약</div>
+    <ul style="list-style:none; padding:0; margin:0; font-size:13.5px; color:var(--text-sub); line-height:2;">
+      <li>• 폭 <b>280px</b> · padding 16 · 라운드 12 · 보더 <b>#CFD6DF</b> + 그림자</li>
+      <li>• 헤더: <b>월/년</b> + 드롭다운 (연/월 선택) · 우측 <b>← →</b> 화살표</li>
+      <li>• 요일 헤더: 일 월 화 수 목 금 토 (12px · 회색)</li>
+      <li>• 날짜 그리드 <b>7×6</b> · 원형 셀 · 다른 달은 흐림</li>
+      <li>• 오늘 하이라이트: <b>파란 텍스트</b> (선택 안 됨) → 선택 시 <b>파란 원 배경 + 흰 텍스트</b></li>
+      <li>• 푸터: <span style="color:var(--highlight); font-weight:700">삭제</span> · <span style="color:var(--primary); font-weight:700">오늘</span></li>
+    </ul>
+    <div style="margin-top:12px; font-size:12.5px; color:var(--text-muted);">
+      클래스: <code>.datepicker</code> · <code>.datepicker-head</code> · <code>.datepicker-weekdays</code> · <code>.datepicker-days</code> · <code>.datepicker-day</code> (<code>.today</code>, <code>.selected</code>, <code>.other</code>)
+    </div>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

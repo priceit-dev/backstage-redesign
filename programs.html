@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 프로그램</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .course-card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; display:flex; flex-direction:column; gap:14px; cursor:pointer; transition:.1s; }
+  .course-card:hover{ background: var(--neutral-soft); }
+  .course-body{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .course-body-left{ flex:1; min-width:0; }
+  .course-name{ font-size:18px; font-weight:800; letter-spacing:-0.01em; }
+  .course-sub{ font-size:13px; color:var(--text-muted); margin-top:4px; }
+  .course-sub b{ color:var(--text-sub); font-weight:700; }
+  .cohort-pills{ display:flex; flex-wrap:wrap; gap:6px; }
+  .course-foot{ margin-top:2px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--text-muted); display:flex; align-items:center; justify-content:space-between; }
+  .course-foot a{ color:var(--primary); font-weight:700; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="코스 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">프로그램</h1>
+          <p class="page-sub">자체 상품 <b>4개</b> · 진행 중 <b style="color:var(--primary)">3개</b></p>
+        </div>
+        <div class="page-actions">
+          <div class="select-wrap" style="width:150px"><div class="select"><span>전체 상태</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+          <button class="btn btn-primary" onclick="location.href='course-add-program.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>상품 추가</button>
+        </div>
+      </div>
+
+      <div class="tabs" style="margin-top:20px; padding:0 4px; border-bottom:1px solid var(--border);">
+        <div class="tab active">전체 <span class="count">4</span></div>
+        <div class="tab">PT 상품 <span class="count">2</span></div>
+        <div class="tab">정규과정 <span class="count">1</span></div>
+        <div class="tab">특강 <span class="count">1</span></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:24px;">
+        <div class="course-card" onclick="location.href='program-detail.html'">
+          <div class="course-body">
+            <div class="course-body-left">
+              <div class="course-name">쿠팡 PT</div>
+              <div class="course-sub"><b>자체 상품</b> · 1:1 코칭 · 이커머스 실전 PT</div>
+            </div>
+            <div class="course-body-right"><span class="pill pill-warning">PT 상품</span></div>
+          </div>
+          <div class="cohort-pills"><span class="pill pill-success">진행 중</span></div>
+          <div class="course-foot"><span>현재 참여자 8명 · 누적 21명</span><a>참여자 관리 →</a></div>
+        </div>
+        <div class="course-card" onclick="location.href='program-detail.html'">
+          <div class="course-body">
+            <div class="course-body-left">
+              <div class="course-name">이커머스 PT</div>
+              <div class="course-sub"><b>자체 상품</b> · 1:1 코칭 · 스토어 세팅 PT</div>
+            </div>
+            <div class="course-body-right"><span class="pill pill-warning">PT 상품</span></div>
+          </div>
+          <div class="cohort-pills"><span class="pill pill-success">진행 중</span></div>
+          <div class="course-foot"><span>현재 참여자 5명 · 누적 12명</span><a>참여자 관리 →</a></div>
+        </div>
+        <div class="course-card" onclick="location.href='program-detail.html'">
+          <div class="course-body">
+            <div class="course-body-left">
+              <div class="course-name">건국대 부설 정규과정</div>
+              <div class="course-sub"><b>자체 상품</b> · 4주 학위 인정 과정</div>
+            </div>
+            <div class="course-body-right"><span class="pill pill-warning">정규과정</span></div>
+          </div>
+          <div class="cohort-pills"><span class="pill pill-success">2기 강의중</span></div>
+          <div class="course-foot"><span>총 2개 기수 · 지난 기수 1개 종료</span><a>기수 상세 →</a></div>
+        </div>
+        <div class="course-card" onclick="location.href='program-detail.html'">
+          <div class="course-body">
+            <div class="course-body-left">
+              <div class="course-name">경산 지자체 강의</div>
+              <div class="course-sub"><b>자체 상품</b> · 지자체 위탁 · 1회성</div>
+            </div>
+            <div class="course-body-right"><span class="pill pill-warning">특강</span></div>
+          </div>
+          <div class="cohort-pills"><span class="pill pill-warning">특강 모집중</span></div>
+          <div class="course-foot"><span>1회성 특강 · 신청 12명</span><a>상세 →</a></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

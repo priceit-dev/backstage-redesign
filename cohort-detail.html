@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 슈가보이 2기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-sub); margin-bottom:16px; }
+  .breadcrumb a{ color:var(--text-sub); }
+  .breadcrumb a:hover{ color:var(--primary); }
+  .breadcrumb .sep{ color:var(--text-muted); }
+  .sched-card{ display:flex; gap:0; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .sched-card .cell{ flex:1; padding:16px 20px; border-right:1px solid var(--border); }
+  .sched-card .cell:last-child{ border-right:none; }
+  .sched-card .lbl{ font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
+  .sched-card .val{ font-size:15px; font-weight:700; margin-top:6px; color:var(--text); font-variant-numeric:tabular-nums; }
+  .sched-card .val .dday{ font-size:12px; font-weight:800; color:var(--primary); background:var(--primary-soft); padding:2px 8px; border-radius:999px; margin-left:6px; }
+  .sched-card .val.hl{ color:var(--highlight); }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="이 기수에서 수강생 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <a href="courses.html">코스</a>
+        <span class="sep">›</span>
+        <a href="course-detail.html">슈가보이</a>
+        <span class="sep">›</span>
+        <span style="color:var(--text)">2기</span>
+      </div>
+
+      <div class="page-head">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <a href="course-detail.html" class="icon-btn" title="슈가보이로 돌아가기" style="text-decoration:none; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <h1 class="page-title">슈가보이 2기</h1>
+              <span class="pill pill-warning">모집중</span>
+            </div>
+            <p class="page-sub">4주 코스 · 수강 2026-08-01 ~ 08-31</p>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn" onclick="location.href='cohort-create.html#edit'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>기수 편집</button>
+          <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>수강생 추가</button>
+        </div>
+      </div>
+
+      <!-- 일정 -->
+      <div class="sched-card" style="margin-top:20px;">
+        <div class="cell"><div class="lbl">무료강의</div><div class="val">2026-07-15</div></div>
+        <div class="cell"><div class="lbl">수강 시작</div><div class="val">2026-08-01 <span class="dday">D-24</span></div></div>
+        <div class="cell"><div class="lbl">수강 끝</div><div class="val">2026-08-31</div></div>
+      </div>
+
+      <!-- 요약 스탯 -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body" style="display:grid; grid-template-columns:repeat(5,1fr); gap:24px;">
+          <div><div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">가격</div><div style="font-size:15px; font-weight:600; margin-top:6px;">₩ 890,000</div></div>
+          <div><div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">매출</div><div style="font-size:15px; font-weight:600; margin-top:6px; color:var(--primary);">₩ 24,900,000</div></div>
+          <div><div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">수강 등록</div><div style="font-size:15px; font-weight:600; margin-top:6px;">28명</div></div>
+          <div><div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">결제 예정</div><div style="font-size:15px; font-weight:600; margin-top:6px;">3명</div></div>
+          <div><div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">미납</div><div style="font-size:15px; font-weight:600; margin-top:6px; color:var(--highlight);">1건</div></div>
+        </div>
+      </div>
+
+      <!-- 이 기수의 무료강의 (동일 기수 무료강의만 표시 · 앵콜 추가) -->
+      <div class="card" id="freeclass" style="margin-top:20px;">
+        <div class="card-body">
+          <div class="section-head" style="margin-top:0;">
+            <div class="section-title" style="font-size:15px;">이 기수의 무료강의 <span style="font-size:13px; color:var(--text-muted); font-weight:400;">· 2기</span></div>
+            <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>무료강의 추가 (앵콜)</button>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; align-items:center; gap:14px; padding:14px 16px; border:1px solid var(--border); border-radius:10px;">
+              <span style="font-size:14px; font-weight:600; color:var(--text-sub); background:var(--surface-alt); border:1px solid var(--border); padding:6px 11px; border-radius:7px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">2026-07-15 20:00</span>
+              <div style="flex:1; min-width:0; font-size:16px; font-weight:700; color:var(--text);">톡딜머니 2기 무료강의</div>
+              <button class="btn" onclick="location.href='freeclass-detail.html'" style="flex-shrink:0;">신청자 보기</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:14px; padding:14px 16px; border:1px solid var(--border); border-radius:10px;">
+              <span style="font-size:14px; font-weight:600; color:var(--text-sub); background:var(--surface-alt); border:1px solid var(--border); padding:6px 11px; border-radius:7px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">2026-07-22 20:00</span>
+              <div style="flex:1; min-width:0; font-size:16px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px;">톡딜머니 2기 앵콜 무료강의 <span class="pill pill-info">앵콜</span></div>
+              <button class="btn" onclick="location.href='freeclass-detail.html'" style="flex-shrink:0;">신청자 보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 수강생 목록 -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body">
+          <div class="section-head" style="margin-top:0;">
+            <div class="section-title" style="font-size:15px;">수강생 <span style="font-size:13px; color:var(--text-muted); font-weight:400;">· 28명</span></div>
+            <div class="row" style="gap:8px;">
+              <div class="select-wrap" style="width:130px"><div class="select"><span>전체 상태</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+              <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>내보내기</button>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr><th>상태</th><th>수강생</th><th>결제</th><th>재수강</th><th>연락처</th><th style="width:40px;"></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">김수현</div><div class="person-meta">soohyun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1000-2000</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">이지은</div><div class="person-meta">jieun@example.com</div></div></td>
+                <td><span class="money">₩ 801,000</span></td>
+                <td><span class="pill pill-purple">재수강</span></td>
+                <td class="muted">010-1137-2251</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-info">수강 등록</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">박민수</div><div class="person-meta">minsu@example.com</div></div></td>
+                <td><span class="money" style="color:var(--text-muted)">₩ 890,000 (결제 예정)</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1274-2502</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">최유진</div><div class="person-meta">yujin@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1411-2753</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">정하늘</div><div class="person-meta">haneul@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1548-3004</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-danger">미납</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">강도현</div><div class="person-meta">dohyun@example.com</div></div></td>
+                <td><span class="money" style="color:var(--danger-text, #D92D20)">₩ 890,000 (미납)</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1685-3255</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">윤서연</div><div class="person-meta">seoyeon@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1822-3506</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">임재현</div><div class="person-meta">jaehyun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-1959-3757</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">한소희</div><div class="person-meta">sohee@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-2096-4008</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-info">수강 등록</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">오지훈</div><div class="person-meta">jihoon@example.com</div></div></td>
+                <td><span class="money" style="color:var(--text-muted)">₩ 890,000 (결제 예정)</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-2233-4259</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">신예은</div><div class="person-meta">yeeun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-2370-4510</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">배준호</div><div class="person-meta">junho@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-2507-4761</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">조민지</div><div class="person-meta">minji@example.com</div></div></td>
+                <td><span class="money">₩ 801,000</span></td>
+                <td><span class="pill pill-purple">재수강</span></td>
+                <td class="muted">010-2644-5012</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">서동욱</div><div class="person-meta">dongwook@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-2781-5263</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">문채원</div><div class="person-meta">chaewon@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-2918-5514</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">권혁준</div><div class="person-meta">hyukjun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-3055-5765</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">황수빈</div><div class="person-meta">subin@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-3192-6016</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-info">수강 등록</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">안태윤</div><div class="person-meta">taeyun@example.com</div></div></td>
+                <td><span class="money" style="color:var(--text-muted)">₩ 890,000 (결제 예정)</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-3329-6267</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">유하은</div><div class="person-meta">haeun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-3466-6518</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">남기범</div><div class="person-meta">kibum@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-3603-6769</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">홍지아</div><div class="person-meta">jia@example.com</div></div></td>
+                <td><span class="money">₩ 801,000</span></td>
+                <td><span class="pill pill-purple">재수강</span></td>
+                <td class="muted">010-3740-7020</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">전우진</div><div class="person-meta">woojin@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-3877-7271</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">고은별</div><div class="person-meta">eunbyul@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-4014-7522</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">백승현</div><div class="person-meta">seunghyun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-4151-7773</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">노아름</div><div class="person-meta">areum@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-4288-8024</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">심규현</div><div class="person-meta">kyuhyun@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-4425-8275</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">하지원</div><div class="person-meta">jiwon@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-4562-8526</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">수강중</span></td>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">곽민석</div><div class="person-meta">minseok@example.com</div></div></td>
+                <td><span class="money">₩ 890,000</span></td>
+                <td><span class="pill pill-neutral">첫 수강</span></td>
+                <td class="muted">010-4699-8777</td>
+                <td><button class="row-action" onclick="event.stopPropagation()">⋯</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:16px 2px 4px; font-size:13px; color:var(--text-muted);">총 28명 · 수강중 24 · 결제 예정 3 · 미납 1</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 새 코스 등록</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  body{ background:var(--bg); }
+  .backdrop{
+    position:fixed; inset:0; background:rgba(29,29,29,0.5);
+    display:grid; place-items:center; padding:20px; z-index:100;
+    overflow-y:auto;
+  }
+  .modal{
+    width:100%; max-width:580px; background:var(--surface);
+    border-radius:14px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    overflow:hidden; margin:auto;
+  }
+  .modal-head{
+    padding:20px 24px 0;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .modal-project{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; color:var(--text-sub); font-weight:600;
+  }
+  .modal-project .dot{ width:8px; height:8px; border-radius:50%; background:var(--primary); }
+  .modal-icons{ display:flex; align-items:center; gap:4px; color:var(--text-muted); }
+  .modal-icon-btn{
+    width:32px; height:32px; border-radius:8px;
+    display:grid; place-items:center; cursor:pointer;
+    background:transparent; border:none; color:var(--text-muted);
+    transition:.12s;
+  }
+  .modal-icon-btn:hover{ background:var(--surface-alt); color:var(--text); }
+  .info-pop{ position:absolute; top:46px; right:16px; width:280px; background:var(--text); color:#fff; font-size:12.5px; line-height:1.55; padding:13px 15px; border-radius:11px; box-shadow:0 10px 30px rgba(0,0,0,.22); z-index:20; display:none; }
+  .info-pop.on{ display:block; }
+  .info-pop::after{ content:""; position:absolute; top:-6px; right:22px; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:6px solid var(--text); }
+
+  .modal-body{ padding:12px 24px 20px; }
+  .modal-title{
+    font-size:22px; font-weight:800; color:var(--text); letter-spacing:-0.01em;
+    margin:0 0 10px;
+  }
+
+  /* Role/Type tabs */
+  .role-tabs{
+    display:flex; gap:6px; margin:16px 0 18px;
+    padding:4px; background:var(--surface-alt); border-radius:10px;
+  }
+  .role-tab{
+    flex:1; padding:8px 14px;
+    background:transparent; border:none; border-radius:8px;
+    font-family:inherit; font-size:13.5px; font-weight:700; color:var(--text-sub);
+    cursor:pointer; transition:.12s;
+  }
+  .role-tab:hover{ color:var(--text); }
+  .role-tab.active{
+    background:var(--surface); color:var(--primary);
+    box-shadow: 0 1px 3px rgba(16,24,40,0.08);
+  }
+
+  .info-banner{
+    display:flex; align-items:flex-start; gap:8px;
+    padding:10px 12px; background:var(--info-soft);
+    border-radius:8px; margin-bottom:18px;
+    font-size:12.5px; color:var(--info-text); font-weight:500;
+  }
+  .info-banner .i-icon{ flex-shrink:0; font-size:14px; }
+
+  .form-group{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+  .form-group.row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group.row > div{ display:flex; flex-direction:column; gap:6px; }
+  .form-label{ font-size:13px; font-weight:600; color:var(--text); }
+  .form-label .req{ color:var(--highlight); font-weight:800; margin-left:2px; }
+  .form-label .opt{ color:var(--text-muted); font-weight:500; font-size:11.5px; margin-left:4px; }
+  .form-hint{ font-size:11.5px; color:var(--text-muted); margin-top:2px; }
+  .form-input, .form-select, .form-textarea{
+    width:100%;
+    padding:11px 14px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:var(--surface); color:var(--text);
+    font-family:inherit; font-size:14px;
+    outline:none; box-shadow:var(--shadow-xs);
+    transition:.15s;
+  }
+  .form-input::placeholder, .form-textarea::placeholder{ color:var(--text-placeholder); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus{
+    border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring);
+  }
+  .form-textarea{ resize:vertical; min-height:70px; font-family:inherit; }
+  .form-select{
+    appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%237A8093' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;
+    background-position: right 12px center;
+    padding-right:36px;
+  }
+
+  /* Auto-loaded (readonly) field */
+  .form-input.auto{
+    background: var(--surface-alt);
+    color: var(--text-sub);
+    font-weight:600;
+  }
+  .auto-badge{
+    display:inline-flex; align-items:center; gap:4px;
+    padding:2px 8px; background:var(--success-soft); color:var(--success-text);
+    border-radius:999px; font-size:11px; font-weight:800; margin-left:6px;
+  }
+
+  /* Optional section (nice-to-have fields) */
+  .section-divider{
+    display:flex; align-items:center; gap:12px; margin:20px 0 14px;
+  }
+  .section-divider .line{ flex:1; height:1px; background:var(--border); }
+  .section-divider .label{ font-size:12px; color:var(--text-muted); font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+
+  .modal-foot{
+    padding:14px 24px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .modal-btn{
+    height:40px; padding:0 18px;
+    border-radius:8px; border:none; cursor:pointer;
+    font-family:inherit; font-size:14px; font-weight:700;
+    transition:.12s;
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .modal-btn svg{ flex-shrink:0; }
+  .modal-btn.ghost{ background:transparent; color:var(--text-sub); }
+  .modal-btn.ghost:hover{ background:var(--surface-alt); color:var(--text); }
+  .modal-btn.primary{ background:var(--primary); color:#fff; }
+  .modal-btn.primary:hover{ background:var(--primary-hover); }
+</style>
+</head>
+<body>
+
+<div class="backdrop">
+  <div class="modal">
+    <!-- Header -->
+    <div class="modal-head" style="justify-content:flex-end; position:relative;">
+      <div class="modal-icons">
+        <button class="modal-icon-btn" title="안내" onclick="document.getElementById('infoPop').classList.toggle('on')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+        <button class="modal-icon-btn" title="닫기" onclick="location.href='courses.html'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="info-pop" id="infoPop">여기서 일정(무료강의 날짜·강의 시작일 등)을 등록하면 자동으로 캘린더에 기입됩니다. 캘린더에서 언제든 수정할 수 있어요.</div>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <h2 class="modal-title">새 코스 등록</h2>
+
+      <div class="form-group">
+        <label class="form-label">코스명 <span class="req">*</span></label>
+        <input class="form-input" type="text" placeholder="예) 톡딜머니">
+      </div>
+
+      <div class="form-group row">
+        <div>
+          <label class="form-label">담당 코치 <span class="req">*</span></label>
+          <div class="select-wrap">
+            <div class="select">
+              <span>슈가보이 (신재현)</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="form-hint">자체 상품이면 이 필드 없음</div>
+        </div>
+        <div>
+          <label class="form-label">
+            판매 채널
+            <span class="auto-badge">✓ 자동</span>
+          </label>
+          <input class="form-input auto" type="text" value="톡딜" readonly>
+          <div class="form-hint">코치 선택 시 자동 로드 · 수정 시 코치 프로필도 변경</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">추가사항 <span class="opt">(선택)</span></label>
+        <input class="form-input" type="text" placeholder="예) 카카오 톡딜 · 특이사항 등">
+      </div>
+
+      <div class="section-divider">
+        <div class="line"></div>
+        <div class="label">일정</div>
+        <div class="line"></div>
+      </div>
+
+      <div class="form-group row">
+        <div>
+          <label class="form-label">무료강의 날짜 <span class="opt">(선택)</span></label>
+          <input class="form-input" type="date" value="2026-07-15">
+        </div>
+        <div>
+          <label class="form-label">강의 시작일 <span class="opt">(나중에 수정 가능)</span></label>
+          <input class="form-input" type="date">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div>
+          <label class="form-label">강의 주수 <span class="req">*</span></label>
+          <input class="form-input" type="number" value="4">
+          <div class="form-hint">예) 4주 · 8주</div>
+        </div>
+        <div>
+          <label class="form-label">수료일 <span class="opt">(선택)</span></label>
+          <input class="form-input" type="date">
+          <div class="form-hint">강의 시작일 + 주수 자동 계산</div>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <div class="line"></div>
+        <div class="label">기본 판매 정보</div>
+        <div class="line"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">기본 정가 <span class="req">*</span></label>
+        <input class="form-input" type="text" placeholder="예) 890,000">
+      </div>
+
+      <div class="form-group row" style="grid-template-columns:1fr 1fr;">
+        <div>
+          <label class="form-label">얼리버드 가격 <span class="opt">(선택)</span></label>
+          <input class="form-input" type="text" placeholder="예) 690,000">
+          <div class="form-hint">모집 시작 7일까지 적용</div>
+        </div>
+        <div>
+          <label class="form-label">쿠폰 적용 가격 <span class="opt">(선택)</span></label>
+          <input class="form-input" type="text" placeholder="예) 590,000">
+          <div class="form-hint">쿠폰 코드 사용 시 최종가</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">메모 <span class="opt">(선택)</span></label>
+        <textarea class="form-textarea" placeholder="예) 슈가보이 코치와 협의 완료 · 첫 기수 소규모 20명 예정"></textarea>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-foot">
+      <button class="modal-btn ghost" onclick="location.href='courses.html'">취소</button>
+      <button class="modal-btn primary" onclick="location.href='course-detail.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>
+        코스 등록
+      </button>
+    </div>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

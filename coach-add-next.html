@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 코치 등록 완료</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  body{ background:var(--bg); }
+  .backdrop{
+    position:fixed; inset:0; background:rgba(29,29,29,0.5);
+    display:grid; place-items:center; padding:20px; z-index:100;
+  }
+  .success-modal{
+    width:100%; max-width:440px; background:var(--surface);
+    border-radius:16px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    padding:32px 28px 24px; text-align:center;
+  }
+  .success-icon{
+    width:64px; height:64px; border-radius:50%;
+    background: var(--success-soft); color: var(--success);
+    display:grid; place-items:center; margin:0 auto 18px;
+  }
+  .success-icon svg{ width:32px; height:32px; }
+  .success-title{
+    font-size:20px; font-weight:800; color:var(--text);
+    letter-spacing:-0.01em; margin-bottom:6px;
+  }
+  .success-title b{ color:var(--primary); }
+  .success-desc{
+    font-size:14px; color:var(--text-sub); line-height:1.55;
+    margin-bottom:24px;
+  }
+  .next-question{
+    padding:16px 20px; background: var(--surface-alt);
+    border-radius:12px;
+    display:flex; align-items:center; gap:12px;
+    text-align:left; margin-bottom:20px;
+  }
+  .next-question .q-icon{
+    width:40px; height:40px; border-radius:10px;
+    background: var(--primary-soft); color: var(--primary);
+    display:grid; place-items:center; flex-shrink:0;
+    font-size:20px;
+  }
+  .next-question .q-text{ flex:1; }
+  .next-question .q-title{ font-size:14px; font-weight:700; color:var(--text); }
+  .next-question .q-desc{ font-size:12.5px; color:var(--text-sub); margin-top:2px; }
+
+  .modal-actions{
+    display:flex; gap:8px;
+  }
+  .modal-actions button{
+    flex:1; height:44px;
+    border-radius:8px; border:none; cursor:pointer;
+    font-family:inherit; font-size:14.5px; font-weight:700;
+    transition:.12s;
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .modal-actions .ghost{
+    background:var(--surface); color:var(--text-sub);
+    border:1px solid var(--border-strong);
+  }
+  .modal-actions .ghost:hover{ background:var(--surface-alt); color:var(--text); }
+  .modal-actions .primary{ background:var(--primary); color:#fff; }
+  .modal-actions .primary:hover{ background:var(--primary-hover); }
+</style>
+</head>
+<body>
+
+<div class="backdrop">
+  <div class="success-modal">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <div class="success-title"><b>슈가보이</b> 코치 등록 완료</div>
+    <div class="success-desc">신재현 · 010-1234-5678 · sugarboy@example.com</div>
+
+    <div class="next-question">
+      <div class="q-icon">📚</div>
+      <div class="q-text">
+        <div class="q-title">이 코치의 코스도 함께 만드시겠어요?</div>
+        <div class="q-desc">담당 코치가 슈가보이로 자동 채워집니다</div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="ghost" onclick="location.href='coaches.html'">
+        나중에
+        <span style="font-size:11px; color:var(--text-muted); font-weight:600; margin-left:2px;">(예비 상태)</span>
+      </button>
+      <button class="primary" onclick="location.href='course-add.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        코스 이어서 등록
+      </button>
+    </div>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

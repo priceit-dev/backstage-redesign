@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 대시보드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="수강생 · 코스 · 결제 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" title="새로고침">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+        </button>
+        <button class="icon-btn" title="알림">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="dot"></span>
+        </button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- ============ HERO ============ -->
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">안녕하세요, 예진 님 👋</h1>
+          <p class="page-sub">오늘 대응이 필요한 <b style="color:var(--highlight)">8건</b>이 있어요.</p>
+        </div>
+        <div class="page-actions">
+          <!-- Untitled UI style select -->
+          <div class="select-wrap" style="width:180px">
+            <div class="select">
+              <span>오늘</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <button class="btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            리포트 다운로드
+          </button>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            수동 결제 추가
+          </button>
+        </div>
+      </div>
+
+      <!-- ============ KPI 4 ============ -->
+      <div class="grid grid-4">
+        <div class="kpi">
+          <div class="kpi-label">오늘 결제자</div>
+          <div class="kpi-value">14명</div>
+          <div class="kpi-foot">
+            <span class="change change-up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              +22%
+            </span>
+            <span style="color:var(--text-muted)">어제 대비</span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">오늘 매출</div>
+          <div class="kpi-value">₩ 8,940,000</div>
+          <div class="kpi-foot">
+            <span class="change change-up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              +18%
+            </span>
+            <span style="color:var(--text-muted)">어제 대비</span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">신규 Tally 신청</div>
+          <div class="kpi-value">27건</div>
+          <div class="kpi-foot">
+            <span class="change change-up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              +9건
+            </span>
+            <span style="color:var(--text-muted)">확인 필요 <b style="color:var(--primary)">12건</b></span>
+          </div>
+        </div>
+        <div class="kpi" style="border-color:var(--highlight); box-shadow:0 0 0 1px var(--highlight);">
+          <div class="kpi-label" style="color:var(--highlight)">미납 (긴급)</div>
+          <div class="kpi-value" style="color:var(--highlight)">3건</div>
+          <div class="kpi-foot">
+            <span class="change" style="background:var(--highlight-soft); color:var(--highlight-text)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              +1건
+            </span>
+            <span style="color:var(--text-muted)">어제 대비</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ CHART + TRAFFIC ============ -->
+      <div class="split-2 mt-20">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">매출 리포트</div>
+              <div class="card-sub">최근 매출 추이</div>
+            </div>
+            <div class="tabs" style="border-bottom:none; padding:0;">
+              <div class="tab">12개월</div>
+              <div class="tab active">6개월</div>
+              <div class="tab">30일</div>
+              <div class="tab">7일</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Chart SVG -->
+            <svg viewBox="0 0 1040 320" width="100%" style="display:block;">
+  <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#227EF6" stop-opacity="0.18"/><stop offset="100%" stop-color="#227EF6" stop-opacity="0"/></linearGradient></defs>
+  <line x1="64" y1="276.0" x2="1016" y2="276.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="276.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 0</text><line x1="64" y1="212.0" x2="1016" y2="212.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="212.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 5M</text><line x1="64" y1="148.0" x2="1016" y2="148.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="148.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 10M</text><line x1="64" y1="84.0" x2="1016" y2="84.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="84.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 15M</text><line x1="64" y1="20.0" x2="1016" y2="20.0" stroke="#EEF1F5" stroke-width="1"/><text x="54" y="20.0" font-size="11" fill="#9AA1AE" text-anchor="end" dominant-baseline="middle">₩ 20M</text>
+  <path d="M 64.0,163.4 L 64.0,163.4 L 222.7,137.8 L 381.3,155.7 L 540.0,92.7 L 698.7,109.6 L 857.3,77.6 L 1016.0,52.0 L 1016.0,276.0 L 64.0,276.0 Z" fill="url(#area)"/>
+  <polyline points="64.0,199.2 222.7,173.6 381.3,192.8 540.0,155.7 698.7,169.8 857.3,135.2 1016.0,148.0" fill="none" stroke="#9DC2F5" stroke-width="2" stroke-dasharray="5 5"/>
+  <polyline points="64.0,163.4 222.7,137.8 381.3,155.7 540.0,92.7 698.7,109.6 857.3,77.6 1016.0,52.0" fill="none" stroke="#227EF6" stroke-width="2.5"/>
+  <circle cx="64.0" cy="163.4" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="222.7" cy="137.8" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="381.3" cy="155.7" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="540.0" cy="92.7" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="698.7" cy="109.6" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="857.3" cy="77.6" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/><circle cx="1016.0" cy="52.0" r="3.5" fill="#fff" stroke="#227EF6" stroke-width="2"/>
+  <line x1="540.0" y1="92.7" x2="540.0" y2="276" stroke="#C7D7EE" stroke-width="1" stroke-dasharray="3 3"/>
+  <circle cx="540.0" cy="92.7" r="5.5" fill="#227EF6" stroke="#fff" stroke-width="2.5"/>
+  <text x="64.0" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">2월</text><text x="222.7" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">3월</text><text x="381.3" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">4월</text><text x="540.0" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">5월</text><text x="698.7" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">6월</text><text x="857.3" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">7월</text><text x="1016.0" y="304" font-size="11.5" fill="#7A8093" text-anchor="middle">이번 달</text>
+  <g transform="translate(540.0,84.7)">
+    <rect x="-72" y="-42" width="144" height="46" rx="8" fill="#1D1D1D"/>
+    <text x="0" y="-25" font-size="11" fill="#B9BEC9" text-anchor="middle">2026년 5월</text>
+    <text x="0" y="-7" font-size="14" fill="#fff" font-weight="700" text-anchor="middle">₩ 14,320,000</text>
+  </g>
+</svg>
+            <div class="row mt-12" style="justify-content:flex-start; gap:20px;">
+              <div class="row" style="gap:6px;">
+                <span style="width:10px; height:10px; border-radius:50%; background:var(--primary)"></span>
+                <span style="font-size:12.5px; color:var(--text-sub)">이번 기간</span>
+              </div>
+              <div class="row" style="gap:6px;">
+                <span style="width:10px; height:2px; background:#7BADF7;"></span>
+                <span style="font-size:12.5px; color:var(--text-sub)">지난 기간</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Inbox -->
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">대응 필요 인박스</div>
+              <div class="card-sub">오늘 처리해야 할 8건</div>
+            </div>
+            <a href="#" class="link-more">전체보기</a>
+          </div>
+          <div>
+            <div class="inbox-item">
+              <div class="inbox-icon tally">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="inbox-body">
+                <div class="inbox-title">신규 Tally 신청 <b style="color:var(--primary)">12건</b> 확인 필요</div>
+                <div class="inbox-desc">슈가보이 1기 · 정쌤 2기 · 길잡 3기</div>
+              </div>
+              <div class="inbox-time">방금</div>
+            </div>
+            <div class="inbox-item">
+              <div class="inbox-icon pay">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <div class="inbox-body">
+                <div class="inbox-title">Discord 환불 요청 2건 (수동 등록)</div>
+                <div class="inbox-desc">#환불-요청 채널 · 링크 열어서 등록</div>
+              </div>
+              <div class="inbox-time">1시간 전</div>
+            </div>
+            <div class="inbox-item">
+              <div class="inbox-icon qa">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="inbox-body">
+                <div class="inbox-title">미납 안내 필요 3건</div>
+                <div class="inbox-desc">결제 실패 후 24시간 경과</div>
+              </div>
+              <div class="inbox-time">3시간 전</div>
+            </div>
+            <div class="inbox-item">
+              <div class="inbox-icon refund">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              </div>
+              <div class="inbox-body">
+                <div class="inbox-title">문의 미답변 3건</div>
+                <div class="inbox-desc">평균 대기 4시간</div>
+              </div>
+              <div class="inbox-time">어제</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ RECENT PAYMENTS TABLE + PEOPLE ============ -->
+      <div class="split-2 mt-20">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">최근 결제</div>
+            <a href="#" class="link-more">전체보기</a>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>상태</th>
+                <th>금액</th>
+                <th>수강생</th>
+                <th>코스</th>
+                <th>시각</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="pill pill-success">완료</span></td>
+                <td class="money">₩ 890,000</td>
+                <td class="muted">김수현 (kim@example.com)</td>
+                <td>슈가보이 1기</td>
+                <td class="muted">방금</td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">완료</span></td>
+                <td class="money">₩ 1,290,000</td>
+                <td class="muted">이지훈 (lee@example.com)</td>
+                <td>정쌤 2기</td>
+                <td class="muted">12분 전</td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-warning">대기</span></td>
+                <td class="money">₩ 690,000</td>
+                <td class="muted">박서연 (park@example.com)</td>
+                <td>일당백 3기</td>
+                <td class="muted">32분 전</td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-danger">환불</span></td>
+                <td class="money">₩ 890,000</td>
+                <td class="muted">최민준 (choi@example.com)</td>
+                <td>슈가보이 1기</td>
+                <td class="muted">1시간 전</td>
+              </tr>
+              <tr>
+                <td><span class="pill pill-success">완료</span></td>
+                <td class="money">₩ 1,290,000</td>
+                <td class="muted">정하늘 (jung@example.com)</td>
+                <td>길잡 3기</td>
+                <td class="muted">2시간 전</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">행사 신청 응답 (Tally)</div>
+              <div class="card-sub">📅 캘린더 행사별 신청자 · 오늘 12명 신규</div>
+            </div>
+            <a href="#" class="link-more">캘린더 전체</a>
+          </div>
+          <div class="tabs" style="padding: 0 20px;">
+            <div class="tab active">진행 예정 <span class="count">4</span></div>
+            <div class="tab">진행 완료 <span class="count">12</span></div>
+            <div class="tab">자료형 <span class="count">3</span></div>
+          </div>
+          <div style="padding: 4px 0;">
+            <div style="padding:14px 20px; border-bottom:1px solid var(--border); cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-size:13px; font-weight:700; color:var(--primary);">📅 D-4</span>
+                <span style="font-size:14.5px; font-weight:700;">톡딜머니 무료강의</span>
+                <span class="pill pill-info" style="margin-left:auto;">신규 8명</span>
+              </div>
+              <div style="font-size:12.5px; color:var(--text-muted); padding-left:2px;">2026-07-13 20:00 · 신청 24명 / 정원 100명</div>
+            </div>
+            <div style="padding:14px 20px; border-bottom:1px solid var(--border); cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-size:13px; font-weight:700; color:var(--primary);">📅 D-6</span>
+                <span style="font-size:14.5px; font-weight:700;">정쌤 무료강의 (앵콜)</span>
+                <span class="pill pill-info" style="margin-left:auto;">신규 3명</span>
+              </div>
+              <div style="font-size:12.5px; color:var(--text-muted); padding-left:2px;">2026-07-15 19:30 · 신청 18명 / 정원 80명</div>
+            </div>
+            <div style="padding:14px 20px; border-bottom:1px solid var(--border); cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-size:13px; font-weight:700; color:var(--warning-text);">📅 D-10</span>
+                <span style="font-size:14.5px; font-weight:700;">최튼튼 깜짝 특강</span>
+                <span class="pill pill-warning" style="margin-left:auto;">신규 1명</span>
+              </div>
+              <div style="font-size:12.5px; color:var(--text-muted); padding-left:2px;">2026-07-19 20:00 · 신청 6명 / 정원 50명</div>
+            </div>
+            <div style="padding:14px 20px; cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-size:13px; font-weight:700; color:var(--text-muted);">📎 자료형</span>
+                <span style="font-size:14.5px; font-weight:700;">슈가보이 마진계산기</span>
+                <span class="pill pill-info" style="margin-left:auto;">신규 3명</span>
+              </div>
+              <div style="font-size:12.5px; color:var(--text-muted); padding-left:2px;">리드자석 · 이번주 다운로드 14회</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

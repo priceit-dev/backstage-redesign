@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 신규 코치 추가</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  body{ background:var(--bg); }
+  /* Backdrop (dim behind modal) */
+  .backdrop{
+    position:fixed; inset:0; background:rgba(29,29,29,0.5);
+    display:grid; place-items:center; padding:20px; z-index:100;
+  }
+  /* Modal */
+  .modal{
+    width:100%; max-width:560px; background:var(--surface);
+    border-radius:14px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    overflow:hidden;
+  }
+  .modal-head{
+    padding:20px 24px 0;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .modal-project{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; color:var(--text-sub); font-weight:600;
+  }
+  .modal-project .dot{
+    width:8px; height:8px; border-radius:50%; background:var(--primary);
+  }
+  .modal-icons{ display:flex; align-items:center; gap:4px; color:var(--text-muted); }
+  .modal-icon-btn{
+    width:32px; height:32px; border-radius:8px;
+    display:grid; place-items:center; cursor:pointer;
+    background:transparent; border:none; color:var(--text-muted);
+    transition:.12s;
+  }
+  .modal-icon-btn:hover{ background:var(--surface-alt); color:var(--text); }
+
+  .modal-body{ padding:12px 24px 20px; }
+  .modal-title{
+    font-size:22px; font-weight:800; color:var(--text); letter-spacing:-0.01em;
+    margin:0 0 10px;
+  }
+  /* Role tabs (코치·멘토·강사) */
+  .role-tabs{
+    display:flex; gap:6px; margin:16px 0 18px;
+    padding:4px; background:var(--surface-alt); border-radius:10px;
+  }
+  .role-tab{
+    flex:1; padding:8px 14px;
+    background:transparent; border:none; border-radius:8px;
+    font-family:inherit; font-size:13.5px; font-weight:700; color:var(--text-sub);
+    cursor:pointer; transition:.12s;
+  }
+  .role-tab:hover{ color:var(--text); }
+  .role-tab.active{
+    background:var(--surface); color:var(--primary);
+    box-shadow: 0 1px 3px rgba(16,24,40,0.08);
+  }
+
+  .form-group{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+  .form-group.row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group.row > div{ display:flex; flex-direction:column; gap:6px; }
+  .form-label{ font-size:13px; font-weight:600; color:var(--text); }
+  .form-label .req{ color:var(--highlight); font-weight:800; margin-left:2px; }
+  .form-label .opt{ color:var(--text-muted); font-weight:500; font-size:11.5px; margin-left:4px; }
+  .form-input, .form-select, .form-textarea{
+    width:100%;
+    padding:11px 14px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:var(--surface); color:var(--text);
+    font-family:inherit; font-size:14px;
+    outline:none; box-shadow:var(--shadow-xs);
+    transition:.15s;
+  }
+  .form-input::placeholder, .form-textarea::placeholder{ color:var(--text-placeholder); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus{
+    border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring);
+  }
+  .form-textarea{ resize:vertical; min-height:70px; font-family:inherit; }
+  .form-select{
+    appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%237A8093' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;
+    background-position: right 12px center;
+    padding-right:36px;
+  }
+
+  .modal-foot{
+    padding:14px 24px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .modal-btn{
+    height:40px; padding:0 18px;
+    border-radius:8px; border:none; cursor:pointer;
+    font-family:inherit; font-size:14px; font-weight:700;
+    transition:.12s;
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .modal-btn svg{ flex-shrink:0; }
+  .modal-btn.ghost{ background:transparent; color:var(--text-sub); }
+  .modal-btn.ghost:hover{ background:var(--surface-alt); color:var(--text); }
+  .modal-btn.primary{ background:var(--primary); color:#fff; }
+  .modal-btn.primary:hover{ background:var(--primary-hover); }
+
+  /* Info banner */
+  .info-banner{
+    display:flex; align-items:flex-start; gap:8px;
+    padding:10px 12px; background:var(--info-soft);
+    border-radius:8px; margin-bottom:18px;
+    font-size:12.5px; color:var(--info-text); font-weight:500;
+  }
+  .info-banner .i-icon{ flex-shrink:0; font-size:14px; }
+</style>
+</head>
+<body>
+
+<div class="backdrop">
+  <div class="modal">
+    <!-- Header -->
+    <div class="modal-head">
+      <div class="modal-project">
+        <span class="dot"></span>
+        <span>코치 관리</span>
+      </div>
+      <div class="modal-icons">
+        <button class="modal-icon-btn" title="정보">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+        <button class="modal-icon-btn" title="더보기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+        </button>
+        <button class="modal-icon-btn" title="닫기" onclick="location.href='coaches.html'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <h2 class="modal-title">신규 등록</h2>
+
+      <div class="role-tabs">
+        <button class="role-tab active">코치 등록</button>
+        <button class="role-tab">멘토 등록</button>
+        <button class="role-tab">강사 등록</button>
+      </div>
+
+      <div class="info-banner">
+        <span class="i-icon">💡</span>
+        <span>등록 후 <b>상세 페이지</b>에서 계약서 · 정산 배분율 · 프로필 이미지 등을 추가 설정할 수 있어요.</span>
+      </div>
+
+      <div class="form-group row">
+        <div>
+          <label class="form-label">본명 <span class="req">*</span></label>
+          <input class="form-input" type="text" placeholder="예) 신재현">
+        </div>
+        <div>
+          <label class="form-label">활동명 <span class="req">*</span></label>
+          <input class="form-input" type="text" placeholder="예) 슈가보이">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div>
+          <label class="form-label">휴대폰 번호 <span class="req">*</span></label>
+          <input class="form-input" type="tel" placeholder="010-0000-0000">
+        </div>
+        <div>
+          <label class="form-label">이메일 <span class="req">*</span></label>
+          <input class="form-input" type="email" placeholder="email@example.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">판매 채널 <span class="opt">(주력 채널 · 직접 입력)</span></label>
+        <input class="form-input" type="text" placeholder="예) 톡딜 · 쿠팡 · 테무 · 스마트스토어 등">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">메모 <span class="opt">(선택)</span></label>
+        <textarea class="form-textarea" placeholder="예) 인스타 팔로워 12K · 무료강의 1회 진행 예정 · 지인 소개"></textarea>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-foot">
+      <button class="modal-btn ghost" onclick="location.href='coaches.html'">취소</button>
+      <button class="modal-btn primary" onclick="location.href='coach-add-next.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>
+        등록
+      </button>
+    </div>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

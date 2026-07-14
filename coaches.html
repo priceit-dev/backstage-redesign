@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 코치</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .coach-card{
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:12px;
+    cursor:pointer; transition:.1s;
+  }
+  .coach-card:hover{ background: var(--neutral-soft); }
+  .coach-card:active{ background: #E4E5EC; }
+  .coach-head{
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .coach-name-row{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .coach-name{ font-size:18px; font-weight:800; letter-spacing:-0.01em; }
+  .coach-real{ font-size:13px; color:var(--text-muted); }
+  .coach-pills{ display:flex; gap:6px; flex-wrap:wrap; }
+  .coach-contacts{
+    display:flex; gap:6px; flex-wrap:wrap;
+  }
+  .coach-contacts .contact{
+    display:inline-flex; align-items:center; gap:6px; padding:4px 10px;
+    background:var(--surface-alt); border-radius:6px;
+    font-size:12px; color:var(--text-sub); font-weight:500;
+  }
+  .coach-foot{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding-top:12px; border-top:1px solid var(--border);
+  }
+  .coach-foot .stat{ font-size:12px; color:var(--text-sub); }
+  .coach-foot .stat b{ color:var(--text); font-weight:700; }
+  .coach-foot a{ color:var(--primary); font-weight:700; font-size:12.5px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="코치 이름 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">코치</h1>
+          <p class="page-sub">사람 관리 (CRM) · 코스·기수 상태는 코스 페이지에서 확인</p>
+        </div>
+        <div class="page-actions">
+          <input type="text" placeholder="검색" style="width:180px; height:42px; padding:0 14px; border:1px solid var(--border); border-radius:8px; font-size:14px; font-family:inherit; background:var(--surface); color:var(--text); box-sizing:border-box;">
+          <button class="btn btn-primary" onclick="location.href='coach-add.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>새 코치 등록</button>
+        </div>
+      </div>
+
+      <div class="tabs" style="margin-top:20px; padding:0 4px; border-bottom:1px solid var(--border);">
+        <div class="tab active">전체 <span class="count">6</span></div>
+        <div class="tab">활동중 <span class="count">5</span></div>
+        <div class="tab">보류 <span class="count">1</span></div>
+        <div class="tab">계약 만료 <span class="count">0</span></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:24px;">
+        <!-- 1. 슈가보이 -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-warning">톡딜</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">슈가보이</div>
+              <div class="coach-real">신재현</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-1234-5678</span>
+            <span class="contact">계약 2026-01-15 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>56명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+
+        <!-- 2. 정쌤 -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-danger">쿠팡</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">정쌤</div>
+              <div class="coach-real">정민영</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-2345-6789</span>
+            <span class="contact">계약 2025-09-01 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>76명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+
+        <!-- 3. 일당백 -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-info">스마트스토어</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">일당백</div>
+              <div class="coach-real">김준호</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-3456-7890</span>
+            <span class="contact">계약 2025-06-10 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>128명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+
+        <!-- 4. 길잡 -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-purple">테무</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">길잡</div>
+              <div class="coach-real">장광훈</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-4567-8901</span>
+            <span class="contact">계약 2026-02-20 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>82명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+
+        <!-- 5. 최튼튼 -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-danger">쿠팡</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">최튼튼</div>
+              <div class="coach-real">최지성</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-5678-9012</span>
+            <span class="contact">계약 2026-04-01 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>32명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+
+        <!-- 6. 헨리 -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill pill-neutral">보류</span>
+              <span class="pill pill-neutral">해외 소싱</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">헨리</div>
+              <div class="coach-real">Henry Park</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-6789-0123</span>
+            <span class="contact">계약 2025-11-01 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>28명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

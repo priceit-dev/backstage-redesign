@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 다시보기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .vod-board{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:22px; align-items:start; }
+  .vod-col{ background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .vod-col-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:16px 18px; border-bottom:1px solid var(--border); }
+  .vod-col-head .vhead-left{ display:flex; align-items:center; gap:9px; min-width:0; }
+  .vod-col-head .cname{ font-size:15px; font-weight:800; color:var(--text); }
+  .ccoach{ display:inline-block; flex-shrink:0; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:6px; background:var(--primary-soft); color:var(--primary); }
+  .ccount{ flex-shrink:0; font-size:12px; color:var(--text-muted); font-weight:600; }
+  .vod-col-body{ padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .vod-item{ border:1px solid var(--border); border-radius:10px; padding:13px 14px; cursor:pointer; transition:.12s; background:var(--surface); }
+  .vod-item:hover{ border-color:var(--primary-line); box-shadow:var(--shadow-xs); }
+  .vod-item .vtop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+  .vod-item .vn{ font-size:13.5px; font-weight:700; color:var(--text); line-height:1.45; }
+  .vod-item .vtag{ flex-shrink:0; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:5px; background:var(--surface-alt); color:var(--text-sub); white-space:nowrap; }
+  .vod-item .vp{ font-size:13.5px; font-weight:800; color:var(--text); margin-top:12px; }
+  .vod-add-item{ border:1.5px dashed var(--border-strong); border-radius:10px; padding:11px; text-align:center; font-size:12.5px; color:var(--text-muted); font-weight:700; cursor:pointer; transition:.12s; }
+  .vod-add-item:hover{ border-color:var(--primary); color:var(--primary); }
+  .vod-add-col{ align-self:stretch; min-height:200px; border:1.5px dashed var(--border-strong); border-radius:14px; display:grid; place-items:center; cursor:pointer; transition:.12s; }
+  .vod-add-col:hover{ border-color:var(--primary); background:var(--primary-soft); }
+  .vod-add-col .inner{ text-align:center; color:var(--text-muted); }
+  .vod-add-col:hover .inner{ color:var(--primary); }
+  .vod-add-col .circle{ width:46px; height:46px; border-radius:50%; background:var(--surface-alt); display:grid; place-items:center; margin:0 auto 10px; }
+  .vod-add-col:hover .circle{ background:#fff; }
+  .vod-add-col .txt{ font-size:13px; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div><div class="brand-name">ClassHub</div><div class="brand-sub">Backstage</div></div>
+    </div>
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+  <div>
+    <header class="topbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="검색"></div>
+      <div class="topbar-actions"><button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button><div class="avatar">YJ</div></div>
+    </header>
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">다시보기</h1>
+          <p class="page-sub">코스별 무료강의 녹화본(VOD) 판매 관리 — 코드 발급, 수령인 관리, 구매 내역</p>
+        </div>
+      </div>
+
+      <div class="vod-board">
+      <div class="vod-col">
+        <div class="vod-col-head">
+          <div class="vhead-left"><span class="ccoach">길잡</span><div class="cname">테무로드</div></div>
+          <span class="ccount">VOD 2개</span>
+        </div>
+        <div class="vod-col-body">
+          <div class="vod-item" onclick="location.href='replay-detail.html'">
+            <div class="vtop"><div class="vn">테무로드 무료강의 다시보기</div><span class="vtag">영상 · 보너스</span></div>
+            <div class="vp">50,000원</div>
+          </div>
+          <div class="vod-item" onclick="location.href='replay-detail.html'">
+            <div class="vtop"><div class="vn">테무로드 앵콜 특강 다시보기</div><span class="vtag">영상</span></div>
+            <div class="vp">50,000원</div>
+          </div>
+          <div class="vod-add-item">+ VOD 추가</div>
+        </div>
+      </div>
+      <div class="vod-col">
+        <div class="vod-col-head">
+          <div class="vhead-left"><span class="ccoach">최튼튼</span><div class="cname">오토쿠팡</div></div>
+          <span class="ccount">VOD 1개</span>
+        </div>
+        <div class="vod-col-body">
+          <div class="vod-item" onclick="location.href='replay-detail.html'">
+            <div class="vtop"><div class="vn">오토쿠팡 무료강의 다시보기</div><span class="vtag">영상 · 보너스</span></div>
+            <div class="vp">50,000원</div>
+          </div>
+          <div class="vod-add-item">+ VOD 추가</div>
+        </div>
+      </div>
+      <div class="vod-col">
+        <div class="vod-col-head">
+          <div class="vhead-left"><span class="ccoach">슈가보이</span><div class="cname">톡딜머니</div></div>
+          <span class="ccount">VOD 1개</span>
+        </div>
+        <div class="vod-col-body">
+          <div class="vod-item" onclick="location.href='replay-detail.html'">
+            <div class="vtop"><div class="vn">톡딜머니 무료강의 다시보기</div><span class="vtag">영상</span></div>
+            <div class="vp">50,000원</div>
+          </div>
+          <div class="vod-add-item">+ VOD 추가</div>
+        </div>
+      </div>
+      <div class="vod-col">
+        <div class="vod-col-head">
+          <div class="vhead-left"><span class="ccoach">정쌤</span><div class="cname">매출팡팡</div></div>
+          <span class="ccount">VOD 1개</span>
+        </div>
+        <div class="vod-col-body">
+          <div class="vod-item" onclick="location.href='replay-detail.html'">
+            <div class="vtop"><div class="vn">매출팡팡 무료강의 다시보기</div><span class="vtag">영상 · 보너스</span></div>
+            <div class="vp">50,000원</div>
+          </div>
+          <div class="vod-add-item">+ VOD 추가</div>
+        </div>
+      </div>
+      <div class="vod-col">
+        <div class="vod-col-head">
+          <div class="vhead-left"><span class="ccoach" style="background:var(--surface-alt); color:var(--text-sub);">자체</span><div class="cname">프로그램</div></div>
+          <span class="ccount">VOD 1개</span>
+        </div>
+        <div class="vod-col-body">
+          <div class="vod-item" onclick="location.href='replay-detail.html'">
+            <div class="vtop"><div class="vn">실전 셀러 부트캠프 다시보기</div><span class="vtag">영상 · 보너스</span></div>
+            <div class="vp">90,000원</div>
+          </div>
+          <div class="vod-add-item">+ VOD 추가</div>
+        </div>
+      </div>
+      <div class="vod-add-col">
+        <div class="inner">
+          <div class="circle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <div class="txt">코스 추가하기</div>
+        </div>
+      </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

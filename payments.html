@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 결제</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="수강생 · 코스 · 결제 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">결제</h1>
+          <p class="page-sub">이번 달 결제 <b style="color:var(--primary)">142건 · ₩ 89,340,000</b></p>
+        </div>
+        <div class="page-actions">
+          <div class="select-wrap" style="width:180px">
+            <div class="select">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted)"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+              <span>전체 상품 유형</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="select-wrap" style="width:160px">
+            <div class="select">
+              <span>최근 30일</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <button class="btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            내보내기
+          </button>
+          <button class="btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            수동 결제 추가
+          </button>
+          <button class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            빠른 결제 링크
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <!-- Filter tabs (Stripe style) -->
+        <div class="tabs">
+          <div class="tab active">전체 <span class="count">180</span></div>
+          <div class="tab">완료 <span class="count">148</span></div>
+          <div class="tab">대기 <span class="count">6</span></div>
+          <div class="tab">환불 <span class="count">5</span></div>
+          <div class="tab">부분환불 <span class="count">3</span></div>
+          <div class="tab">취소 <span class="count">26</span></div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox" class="check"></th>
+              <th>상태</th>
+              <th>금액</th>
+              <th>수강생</th>
+              <th>코스</th>
+              <th>결제수단</th>
+              <th>결제일</th>
+              <th style="width:40px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-success">완료</span></td>
+              <td class="money">₩ 890,000</td>
+              <td class="muted">김수현 · kim@example.com</td>
+              <td>슈가보이 1기</td>
+              <td class="muted">신용카드 (**** 4831)</td>
+              <td class="muted">2026-07-08 10:42</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-success">완료</span></td>
+              <td class="money">₩ 1,290,000</td>
+              <td class="muted">이지훈 · lee@example.com</td>
+              <td>정쌤 2기</td>
+              <td class="muted">계좌이체</td>
+              <td class="muted">2026-07-08 10:30</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-warning">대기</span></td>
+              <td class="money">₩ 690,000</td>
+              <td class="muted">박서연 · park@example.com</td>
+              <td>일당백 3기</td>
+              <td class="muted">가상계좌</td>
+              <td class="muted">2026-07-08 10:10</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-danger">환불</span></td>
+              <td class="money">₩ 890,000</td>
+              <td class="muted">최민준 · choi@example.com</td>
+              <td>슈가보이 1기</td>
+              <td class="muted">신용카드 (**** 6442)</td>
+              <td class="muted">2026-07-08 09:32</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-success">완료</span></td>
+              <td class="money">₩ 1,290,000</td>
+              <td class="muted">정하늘 · jung@example.com</td>
+              <td>길잡 3기</td>
+              <td class="muted">신용카드 (**** 8823)</td>
+              <td class="muted">2026-07-08 08:15</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-success">완료</span></td>
+              <td class="money">₩ 39,000</td>
+              <td class="muted">한유진 · han@example.com</td>
+              <td>톡딜머니 무료강의 VOD <span class="pill pill-purple" style="margin-left:6px; font-size:11px; padding:2px 8px;">VOD</span></td>
+              <td class="muted">신용카드 (**** 1092)</td>
+              <td class="muted">2026-07-07 22:41</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-neutral">부분환불</span></td>
+              <td class="money">₩ 445,000<br><span style="font-size:11px;font-weight:400;color:var(--text-muted)">원 890,000 중 절반</span></td>
+              <td class="muted">차진영 · cha@example.com</td>
+              <td>최튼튼 특강</td>
+              <td class="muted">신용카드 (**** 7712)</td>
+              <td class="muted">2026-07-07 19:20</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-success">완료</span></td>
+              <td class="money">₩ 1,290,000</td>
+              <td class="muted">문지호 · moon@example.com</td>
+              <td>정쌤 2기</td>
+              <td class="muted">계좌이체</td>
+              <td class="muted">2026-07-07 15:58</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-success">완료</span></td>
+              <td class="money">₩ 690,000</td>
+              <td class="muted">장수민 · jang@example.com</td>
+              <td>일당백 3기</td>
+              <td class="muted">신용카드 (**** 5023)</td>
+              <td class="muted">2026-07-07 14:20</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-warning">대기</span></td>
+              <td class="money">₩ 890,000</td>
+              <td class="muted">신하영 · shin@example.com</td>
+              <td>슈가보이 1기</td>
+              <td class="muted">가상계좌</td>
+              <td class="muted">2026-07-07 11:03</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-neutral">취소</span></td>
+              <td class="money" style="text-decoration:line-through; color:var(--text-muted);">₩ 1,000</td>
+              <td class="muted">김지은 · jn7277@hotmail.com</td>
+              <td>[TEST] 테스트 코스 1기</td>
+              <td class="muted">간편결제</td>
+              <td class="muted">2026-07-09 23:23</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="check"></td>
+              <td><span class="pill pill-neutral">취소</span></td>
+              <td class="money" style="text-decoration:line-through; color:var(--text-muted);">₩ 15,000</td>
+              <td class="muted">— (미인증)</td>
+              <td class="muted">—</td>
+              <td class="muted">간편결제</td>
+              <td class="muted">2026-07-09 22:32</td>
+              <td><button class="row-action" title="액션 · 상세 · 영수증 · 환불 · 삭제">⋯</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="card-foot">
+          <span>총 142건 중 1-10건 표시</span>
+          <div class="pager">
+            <button class="pg arrow" disabled aria-label="처음">«</button>
+            <button class="pg arrow" disabled aria-label="이전">‹</button>
+            <button class="pg active">1</button>
+            <button class="pg">2</button>
+            <button class="pg">3</button>
+            <span class="dots">…</span>
+            <button class="pg">15</button>
+            <button class="pg arrow" aria-label="다음">›</button>
+            <button class="pg arrow" aria-label="마지막">»</button>
+          </div>
+          <span></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

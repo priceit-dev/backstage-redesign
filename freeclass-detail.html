@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 톡딜머니 2기 무료강의</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-sub); margin-bottom:16px; }
+  .breadcrumb a{ color:var(--text-sub); }
+  .breadcrumb a:hover{ color:var(--primary); }
+  .breadcrumb .sep{ color:var(--text-muted); }
+  .fc-tag{ display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--surface-alt); color:var(--text-sub); border:1px solid var(--border); }
+  .tally-card{
+    display:flex; align-items:center; gap:16px;
+    padding:18px 20px; border:1px solid var(--surface-alt); border-radius:12px;
+    background:var(--bg);
+  }
+  .tally-card .url{
+    font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:13px;
+    color:var(--text-sub); background:var(--surface); border:1px solid var(--border);
+    padding:6px 10px; border-radius:7px; margin-top:4px; display:inline-block;
+  }
+  .att-yes{ color:var(--success-text); font-weight:700; }
+  .att-no{ color:var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="신청자 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <a href="courses.html">코스</a>
+        <span class="sep">›</span>
+        <a href="course-detail.html">슈가보이</a>
+        <span class="sep">›</span>
+        <span style="color:var(--text)">톡딜머니 2기 무료강의</span>
+      </div>
+
+      <div class="page-head">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <a href="course-detail.html#freeclass" class="icon-btn" title="슈가보이로 돌아가기" style="text-decoration:none; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <h1 class="page-title">톡딜머니 2기 무료강의</h1>
+              <span class="pill pill-warning">모집중</span>
+            </div>
+            <p class="page-sub">슈가보이 · 무료강의 · 2026-07-15 20:00</p>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn">무료강의 편집</button>
+          <button class="btn btn-primary" onclick="copyUrl()">신청 URL 복사</button>
+        </div>
+      </div>
+
+      <!-- 요약 스탯 -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body" style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">일정</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px;">2026-07-15 20:00</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">연결 기수</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px;">2기</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">신청자</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px;">48명 <span style="font-size:12px; color:var(--text-muted); font-weight:500;">· 참석 31</span></div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">기수 전환</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px; color:var(--primary);">12명 결제</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 신청 폼 (Tally) — 폼 편집은 Tally, 응답은 여기 -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body">
+          <div class="tally-card">
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:14.5px; font-weight:700; color:var(--text);">신청 폼 · Tally 연동됨</div>
+              <div class="url">https://tally.so/r/sugarboy-08</div>
+            </div>
+            <a href="https://tally.so" target="_blank" class="btn">Tally에서 폼 편집</a>
+          </div>
+          <div class="helper-note" style="margin-top:14px;">
+            <span class="icon">💡</span>
+            <span>폼 질문(이름·연락처·신청동기 등)은 Tally에서 편집. 신청자 응답은 아래 목록에 자동으로 수집</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 신청자 목록 -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body">
+          <div class="section-head" style="margin-top:0;">
+            <div class="section-title" style="font-size:15px;">신청자 <span style="font-size:13px; color:var(--text-muted); font-weight:400;">· 48명</span></div>
+            <div class="row" style="gap:8px;">
+              <div class="select-wrap" style="width:130px"><div class="select"><span>전체 상태</span><span style="color:var(--text-muted); font-size:11px;">▾</span></div></div>
+              <button class="btn">내보내기</button>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>신청자</th><th>신청일</th><th>연락처</th><th>참석</th><th>기수 전환</th><th style="width:40px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">김수현</div><div class="person-meta">soohyun@example.com</div></div></td>
+                <td class="muted">07-01</td>
+                <td class="muted">010-1000-2000</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">이지은</div><div class="person-meta">jieun@example.com</div></div></td>
+                <td class="muted">07-01</td>
+                <td class="muted">010-1137-2251</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">박민수</div><div class="person-meta">minsu@example.com</div></div></td>
+                <td class="muted">07-01</td>
+                <td class="muted">010-1274-2502</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">최유진</div><div class="person-meta">yujin@example.com</div></div></td>
+                <td class="muted">07-01</td>
+                <td class="muted">010-1411-2753</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">정하늘</div><div class="person-meta">haneul@example.com</div></div></td>
+                <td class="muted">07-02</td>
+                <td class="muted">010-1548-3004</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">강도현</div><div class="person-meta">dohyun@example.com</div></div></td>
+                <td class="muted">07-02</td>
+                <td class="muted">010-1685-3255</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">윤서연</div><div class="person-meta">seoyeon@example.com</div></div></td>
+                <td class="muted">07-02</td>
+                <td class="muted">010-1822-3506</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">임재현</div><div class="person-meta">jaehyun@example.com</div></div></td>
+                <td class="muted">07-02</td>
+                <td class="muted">010-1959-3757</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">한소희</div><div class="person-meta">sohee@example.com</div></div></td>
+                <td class="muted">07-03</td>
+                <td class="muted">010-2096-4008</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">오지훈</div><div class="person-meta">jihoon@example.com</div></div></td>
+                <td class="muted">07-03</td>
+                <td class="muted">010-2233-4259</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">신예은</div><div class="person-meta">yeeun@example.com</div></div></td>
+                <td class="muted">07-03</td>
+                <td class="muted">010-2370-4510</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">배준호</div><div class="person-meta">junho@example.com</div></div></td>
+                <td class="muted">07-03</td>
+                <td class="muted">010-2507-4761</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">조민지</div><div class="person-meta">minji@example.com</div></div></td>
+                <td class="muted">07-04</td>
+                <td class="muted">010-2644-5012</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">서동욱</div><div class="person-meta">dongwook@example.com</div></div></td>
+                <td class="muted">07-04</td>
+                <td class="muted">010-2781-5263</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">문채원</div><div class="person-meta">chaewon@example.com</div></div></td>
+                <td class="muted">07-04</td>
+                <td class="muted">010-2918-5514</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">권혁준</div><div class="person-meta">hyukjun@example.com</div></div></td>
+                <td class="muted">07-05</td>
+                <td class="muted">010-3055-5765</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">황수빈</div><div class="person-meta">subin@example.com</div></div></td>
+                <td class="muted">07-05</td>
+                <td class="muted">010-3192-6016</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">안태윤</div><div class="person-meta">taeyun@example.com</div></div></td>
+                <td class="muted">07-05</td>
+                <td class="muted">010-3329-6267</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">유하은</div><div class="person-meta">haeun@example.com</div></div></td>
+                <td class="muted">07-05</td>
+                <td class="muted">010-3466-6518</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">남기범</div><div class="person-meta">kibum@example.com</div></div></td>
+                <td class="muted">07-06</td>
+                <td class="muted">010-3603-6769</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">홍지아</div><div class="person-meta">jia@example.com</div></div></td>
+                <td class="muted">07-06</td>
+                <td class="muted">010-3740-7020</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">전우진</div><div class="person-meta">woojin@example.com</div></div></td>
+                <td class="muted">07-06</td>
+                <td class="muted">010-3877-7271</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">고은별</div><div class="person-meta">eunbyul@example.com</div></div></td>
+                <td class="muted">07-06</td>
+                <td class="muted">010-4014-7522</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">백승현</div><div class="person-meta">seunghyun@example.com</div></div></td>
+                <td class="muted">07-07</td>
+                <td class="muted">010-4151-7773</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">노아름</div><div class="person-meta">areum@example.com</div></div></td>
+                <td class="muted">07-07</td>
+                <td class="muted">010-4288-8024</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">심규현</div><div class="person-meta">kyuhyun@example.com</div></div></td>
+                <td class="muted">07-07</td>
+                <td class="muted">010-4425-8275</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">하지원</div><div class="person-meta">jiwon@example.com</div></div></td>
+                <td class="muted">07-08</td>
+                <td class="muted">010-4562-8526</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">곽민석</div><div class="person-meta">minseok@example.com</div></div></td>
+                <td class="muted">07-08</td>
+                <td class="muted">010-4699-8777</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">성유나</div><div class="person-meta">yuna@example.com</div></div></td>
+                <td class="muted">07-08</td>
+                <td class="muted">010-4836-9028</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">방태호</div><div class="person-meta">taeho@example.com</div></div></td>
+                <td class="muted">07-08</td>
+                <td class="muted">010-4973-9279</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">차예린</div><div class="person-meta">yerin@example.com</div></div></td>
+                <td class="muted">07-09</td>
+                <td class="muted">010-5110-9530</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">주상우</div><div class="person-meta">sangwoo@example.com</div></div></td>
+                <td class="muted">07-09</td>
+                <td class="muted">010-5247-9781</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">진서윤</div><div class="person-meta">seoyun@example.com</div></div></td>
+                <td class="muted">07-09</td>
+                <td class="muted">010-5384-10032</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">표지훈</div><div class="person-meta">jihoon2@example.com</div></div></td>
+                <td class="muted">07-09</td>
+                <td class="muted">010-5521-10283</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">도현우</div><div class="person-meta">hyunwoo@example.com</div></div></td>
+                <td class="muted">07-10</td>
+                <td class="muted">010-5658-10534</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">명하린</div><div class="person-meta">harin@example.com</div></div></td>
+                <td class="muted">07-10</td>
+                <td class="muted">010-5795-10785</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">봉준서</div><div class="person-meta">junseo@example.com</div></div></td>
+                <td class="muted">07-10</td>
+                <td class="muted">010-5932-2036</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">편도윤</div><div class="person-meta">doyun@example.com</div></div></td>
+                <td class="muted">07-11</td>
+                <td class="muted">010-6069-2287</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">예성민</div><div class="person-meta">sungmin@example.com</div></div></td>
+                <td class="muted">07-11</td>
+                <td class="muted">010-6206-2538</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">국지혜</div><div class="person-meta">jihye@example.com</div></div></td>
+                <td class="muted">07-11</td>
+                <td class="muted">010-6343-2789</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">어진솔</div><div class="person-meta">jinsol@example.com</div></div></td>
+                <td class="muted">07-11</td>
+                <td class="muted">010-6480-3040</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">라윤재</div><div class="person-meta">yunjae@example.com</div></div></td>
+                <td class="muted">07-12</td>
+                <td class="muted">010-6617-3291</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">모세준</div><div class="person-meta">sejun@example.com</div></div></td>
+                <td class="muted">07-12</td>
+                <td class="muted">010-6754-3542</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">2기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">반하늘</div><div class="person-meta">haneul2@example.com</div></div></td>
+                <td class="muted">07-12</td>
+                <td class="muted">010-6891-3793</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">선우빈</div><div class="person-meta">woobin@example.com</div></div></td>
+                <td class="muted">07-12</td>
+                <td class="muted">010-7028-4044</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">소연우</div><div class="person-meta">yeonwoo@example.com</div></div></td>
+                <td class="muted">07-13</td>
+                <td class="muted">010-7165-4295</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-success">1기 결제</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">구태현</div><div class="person-meta">taehyun@example.com</div></div></td>
+                <td class="muted">07-13</td>
+                <td class="muted">010-7302-4546</td>
+                <td><span class="att-yes">참석</span></td>
+                <td><span class="pill pill-neutral">미전환</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+              <tr>
+                <td><div class="person-info" style="min-width:0;"><div class="person-name">여민정</div><div class="person-meta">minjung@example.com</div></div></td>
+                <td class="muted">07-13</td>
+                <td class="muted">010-7439-4797</td>
+                <td><span class="att-no">불참</span></td>
+                <td><span class="pill pill-info">상담 예약</span></td>
+                <td><button class="row-action">⋯</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:16px 2px 4px; font-size:13px; color:var(--text-muted);">총 48명</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  function copyUrl(){
+    var url = 'https://tally.so/r/sugarboy-08';
+    if (navigator.clipboard) navigator.clipboard.writeText(url);
+    alert('신청 URL이 복사되었어요\n' + url);
+  }
+</script>
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

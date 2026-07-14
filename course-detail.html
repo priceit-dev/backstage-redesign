@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 슈가보이</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-sub); margin-bottom:16px; }
+  .breadcrumb a{ color:var(--text-sub); }
+  .breadcrumb a:hover{ color:var(--primary); }
+  .breadcrumb .sep{ color:var(--text-muted); }
+  .cohort-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:22px; display:flex; flex-direction:column; gap:16px; transition:.15s;
+  }
+  .cohort-card.active{ border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-ring); }
+  .cohort-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .cohort-head .num{ font-size:22px; font-weight:800; color:var(--text); letter-spacing:-0.01em; }
+  .cohort-date{ font-size:13.5px; color:var(--text-sub); }
+  .cohort-schedule{
+    padding:14px 16px; background:var(--surface-alt);
+    border:1px solid var(--border); border-radius:8px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .cohort-schedule .row{
+    display:flex; align-items:center; gap:12px;
+    font-size:13px;
+  }
+  .cohort-schedule .row .lbl{
+    color:var(--text-muted); font-weight:600;
+    width:64px; flex-shrink:0;
+    font-size:12.5px;
+  }
+  .cohort-schedule .row .val{ font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
+  .cohort-schedule .row .dday{
+    margin-left:auto;
+    font-size:12px; font-weight:800; color:var(--primary);
+    padding:2px 8px; background:var(--primary-soft); border-radius:999px;
+  }
+  .cohort-progress{ height:6px; background:#F2F4F7; border-radius:999px; overflow:hidden; }
+  .cohort-progress .fill{ height:100%; background:var(--primary); border-radius:inherit; }
+  .cohort-progress-label{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:12.5px; color:var(--text-muted); font-weight:600;
+    margin-top:6px;
+  }
+  .cohort-progress-label .pct{ color:var(--primary); font-weight:800; }
+  .cohort-stat{
+    display:flex; align-items:center; gap:10px;
+    padding-top:14px; border-top:1px solid var(--border);
+    font-size:13px; color:var(--text-sub);
+  }
+  .cohort-stat > div{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:3px; flex:1; min-width:0; }
+  .cohort-stat .lbl{ font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+  .cohort-stat .val{ font-size:15px; font-weight:700; color:var(--text); }
+  .cohort-stat .val.hl{ color:var(--highlight); }
+  .cohort-actions{ display:flex; gap:8px; margin-top:2px; }
+  .cohort-actions .btn-main{
+    flex:1; height:40px; border-radius:8px; border:none;
+    background:var(--primary); color:#fff; font-weight:700; font-size:14px;
+    cursor:pointer; font-family:inherit;
+  }
+  .cohort-actions .btn-main:hover{ background:var(--primary-hover); }
+  .cohort-actions .btn-icon{
+    width:40px; height:40px; border-radius:8px;
+    background:var(--surface-alt); border:1px solid var(--border);
+    display:grid; place-items:center; cursor:pointer;
+    color:var(--text-sub); transition:.12s;
+  }
+  .cohort-actions .btn-icon:hover{ background:var(--primary-soft); color:var(--primary); }
+  .tab{ cursor:pointer; }
+  .fc-tag{ display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--surface-alt); color:var(--text-sub); border:1px solid var(--border); }
+  .modal-overlay{ position:fixed; inset:0; background:rgba(16,24,40,.5); display:none; align-items:center; justify-content:center; z-index:100; }
+  .modal-overlay.show{ display:flex; }
+  .modal{ background:#fff; border-radius:14px; width:420px; max-width:calc(100vw - 40px); padding:26px; box-shadow:0 20px 48px rgba(16,24,40,.24); }
+  .modal h3{ font-size:17px; font-weight:800; color:var(--text); margin-bottom:10px; }
+  .modal p{ font-size:14px; color:var(--text-sub); line-height:1.65; }
+  .modal .modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:24px; }
+  /* 기수 상태 인라인 드롭다운 */
+  .status-dd{ position:relative; }
+  .status-trigger{ cursor:pointer; border:none; font-family:inherit; display:inline-flex; align-items:center; gap:3px; }
+  .status-trigger{ gap:6px; }
+  .status-trigger .caret{ width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:5px solid currentColor; display:inline-block; }
+  .status-menu{ position:absolute; top:calc(100% + 5px); right:0; z-index:30; background:#fff; border:1px solid var(--border); border-radius:9px; box-shadow:0 10px 28px rgba(16,24,40,.16); padding:5px; display:none; min-width:112px; }
+  .status-menu.open{ display:block; }
+  .status-opt{ padding:8px 10px; border-radius:6px; font-size:13px; font-weight:600; color:var(--text-sub); cursor:pointer; }
+  .status-opt:hover{ background:var(--surface-alt); color:var(--text); }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="이 코스에서 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <a href="courses.html">코스</a>
+        <span class="sep">›</span>
+        <span style="color:var(--text)">슈가보이</span>
+      </div>
+
+      <div class="page-head">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <h1 class="page-title">슈가보이</h1>
+              <span class="pill pill-info">코치 상품</span>
+            </div>
+            <p class="page-sub">카카오 톡딜 · 코치 <a href="#" style="color:var(--primary); font-weight:600;">슈가보이</a></p>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn" onclick="location.href='course-add.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>코스 정보 편집</button>
+          <button class="btn btn-primary" onclick="location.href='cohort-create.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>새 기수 생성</button>
+        </div>
+      </div>
+
+      <!-- Course info card -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-body" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">코스 유형</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px;">4주 코스</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">전체 등록</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px;">42명 (누적)</div>
+          </div>
+          <div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">누적 매출</div>
+            <div style="font-size:15px; font-weight:600; margin-top:6px; color:var(--primary);">₩ 37,380,000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="card" style="margin-top:20px;">
+        <div class="tabs">
+          <div class="tab active" data-panel="cohorts">기수 <span class="count">3</span></div>
+          <div class="tab" data-panel="freeclass">무료강의 <span class="count">2</span></div>
+          <div class="tab" data-panel="students">전체 수강생 <span class="count">42</span></div>
+          <div class="tab" data-modal="landing">랜딩 페이지</div>
+          <div class="tab" data-panel="desc">코스 설명</div>
+        </div>
+
+        <div class="card-body">
+          <!-- Panel: 기수 -->
+          <div class="panel" id="panel-cohorts">
+          <div class="section-head" style="margin-top:0;">
+            <div class="section-title" style="font-size:15px;">기수 목록</div>
+            <div class="row" style="gap:8px;">
+              <div class="select-wrap" style="width:130px"><div class="select"><span>전체 상태</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+            </div>
+          </div>
+
+          <div class="grid grid-3">
+            <!-- 2기 (모집중) -->
+            <div class="cohort-card">
+              <div class="cohort-head">
+                <div class="num">2기</div>
+                <div class="status-dd">
+                  <button type="button" class="pill pill-warning status-trigger">모집중<span class="caret"></span></button>
+                  <div class="status-menu">
+                    <div class="status-opt" data-s="준비">준비</div>
+                    <div class="status-opt" data-s="모집중">모집중</div>
+                    <div class="status-opt" data-s="강의중">강의중</div>
+                    <div class="status-opt" data-s="종료">종료</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cohort-schedule">
+                <div class="row">
+                  <span class="lbl">무료강의</span>
+                  <span class="val">2026-07-15</span>
+                </div>
+                <div class="row">
+                  <span class="lbl">수강 시작</span>
+                  <span class="val">2026-08-01</span>
+                  <span class="dday">D-24</span>
+                </div>
+                <div class="row">
+                  <span class="lbl">수강 끝</span>
+                  <span class="val">2026-08-31</span>
+                </div>
+              </div>
+              <div class="cohort-stat">
+                <div><div class="lbl">가격</div><div class="val">₩ 890,000</div></div>
+                <div><div class="lbl">매출</div><div class="val">₩ 24.9M</div></div>
+                <div><div class="lbl">수강 등록</div><div class="val">28명</div></div>
+                <div><div class="lbl">미납</div><div class="val hl">1건</div></div>
+              </div>
+              <div class="cohort-actions">
+                <button class="btn-main" onclick="location.href='cohort-detail.html'">정보 더보기</button>
+                <button class="btn-main" onclick="location.href='freeclass-create.html'" style="background:var(--surface); color:var(--text-sub); border:1px solid var(--border);">무료강의 추가</button>
+                <button class="btn-icon" title="기수 편집" onclick="location.href='cohort-create.html'">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- 1기 (강의중) -->
+            <div class="cohort-card">
+              <div class="cohort-head">
+                <div class="num">1기</div>
+                <div class="status-dd">
+                  <button type="button" class="pill pill-success status-trigger">강의중<span class="caret"></span></button>
+                  <div class="status-menu">
+                    <div class="status-opt" data-s="준비">준비</div>
+                    <div class="status-opt" data-s="모집중">모집중</div>
+                    <div class="status-opt" data-s="강의중">강의중</div>
+                    <div class="status-opt" data-s="종료">종료</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cohort-schedule">
+                <div class="row">
+                  <span class="lbl">무료강의</span>
+                  <span class="val">2026-07-15</span>
+                </div>
+                <div class="row">
+                  <span class="lbl">수강 시작</span>
+                  <span class="val">2026-08-01</span>
+                </div>
+                <div class="row">
+                  <span class="lbl">수강 끝</span>
+                  <span class="val">2026-08-31</span>
+                  <span class="dday">D-6</span>
+                </div>
+              </div>
+              <div class="cohort-stat">
+                <div><div class="lbl">가격</div><div class="val">₩ 890,000</div></div>
+                <div><div class="lbl">매출</div><div class="val">₩ 24.9M</div></div>
+                <div><div class="lbl">수강 등록</div><div class="val">28명</div></div>
+                <div><div class="lbl">완료</div><div class="val" style="color:var(--success-text);">2명</div></div>
+              </div>
+              <div class="cohort-actions">
+                <button class="btn-main" onclick="location.href='cohort-detail.html'">정보 더보기</button>
+                <button class="btn-main" onclick="location.href='freeclass-create.html'" style="background:var(--surface); color:var(--text-sub); border:1px solid var(--border);">무료강의 추가</button>
+                <button class="btn-icon" title="기수 종료">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="1"/><path d="M9 3h6v3H9z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- 0기 (종료) -->
+            <div class="cohort-card">
+              <div class="cohort-head">
+                <div class="num">0기 <span style="font-size:14px; color:var(--text-muted); font-weight:600;">베타</span></div>
+                <div class="status-dd">
+                  <button type="button" class="pill pill-neutral status-trigger">종료<span class="caret"></span></button>
+                  <div class="status-menu">
+                    <div class="status-opt" data-s="준비">준비</div>
+                    <div class="status-opt" data-s="모집중">모집중</div>
+                    <div class="status-opt" data-s="강의중">강의중</div>
+                    <div class="status-opt" data-s="종료">종료</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cohort-schedule">
+                <div class="row">
+                  <span class="lbl">무료강의</span>
+                  <span class="val">2026-05-30</span>
+                </div>
+                <div class="row">
+                  <span class="lbl">수강 시작</span>
+                  <span class="val">2026-06-15</span>
+                </div>
+                <div class="row">
+                  <span class="lbl">수강 끝</span>
+                  <span class="val">2026-07-15</span>
+                </div>
+              </div>
+              <div class="cohort-stat">
+                <div><div class="lbl">가격</div><div class="val">₩ 690,000</div></div>
+                <div><div class="lbl">매출</div><div class="val">₩ 12.5M</div></div>
+                <div><div class="lbl">수강 등록</div><div class="val">14명</div></div>
+                <div><div class="lbl">환불</div><div class="val hl">2명</div></div>
+              </div>
+              <div class="cohort-actions">
+                <button class="btn-main" onclick="location.href='cohort-detail.html'">정보 더보기</button>
+                <button class="btn-main" onclick="location.href='freeclass-create.html'" style="background:var(--surface); color:var(--text-sub); border:1px solid var(--border);">무료강의 추가</button>
+                <button class="btn-icon" title="상세">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- 새 기수 생성 카드 -->
+            <div class="cohort-card" onclick="location.href='cohort-create.html'" style="border-style:dashed; align-items:center; justify-content:center; text-align:center; cursor:pointer; color:var(--text-muted);">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <div style="font-size:14px; font-weight:600; color:var(--text-sub);">새 기수 생성</div>
+              <div style="font-size:12px;">2기 · 3기 등 새 기수를 추가하세요</div>
+            </div>
+          </div>
+          </div><!-- /panel-cohorts -->
+
+          <!-- Panel: 무료강의 -->
+          <div class="panel" id="panel-freeclass" hidden>
+            <div class="section-head" style="margin-top:0;">
+              <div class="section-title" style="font-size:15px;">무료강의</div>
+            </div>
+            <p style="font-size:13px; color:var(--text-muted); margin:-6px 0 16px;">회차마다 날짜·신청폼·링크가 따로 있고, 앵콜·앵앵콜도 계속 추가할 수 있어요.</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>상태</th><th>무료강의</th><th>일정</th><th>신청자</th><th>연결 기수</th><th>연동</th><th style="width:40px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="cursor:pointer;" onclick="location.href='freeclass-detail.html'">
+                  <td><span class="pill pill-warning">모집중</span></td>
+                  <td><b>8월 무료특강</b></td>
+                  <td class="muted">2026-07-15 20:00</td>
+                  <td class="money">48명</td>
+                  <td>2기 · 1기</td>
+                  <td><span class="fc-tag">Tally · 캘린더</span></td>
+                  <td><button class="row-action" title="수정 · 링크 복사 · 삭제" onclick="event.stopPropagation()">⋯</button></td>
+                </tr>
+                <tr style="cursor:pointer;" onclick="location.href='freeclass-detail.html'">
+                  <td><span class="pill pill-info">오픈예정</span></td>
+                  <td><b>앵콜 특강</b> <span class="pill pill-neutral" style="margin-left:4px;">앵콜</span></td>
+                  <td class="muted">2026-07-22 20:00</td>
+                  <td class="money">12명</td>
+                  <td>2기</td>
+                  <td><span class="fc-tag">Tally · 캘린더</span></td>
+                  <td><button class="row-action" title="수정 · 링크 복사 · 삭제" onclick="event.stopPropagation()">⋯</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="helper-note" style="margin-top:14px;"><span class="icon">💡</span><span>무료강의를 만들면 <b>Tally 신청폼·캘린더 이벤트·링크가 자동 생성</b>돼요.</span></div>
+          </div>
+
+          <!-- Panel: 전체 수강생 -->
+          <div class="panel" id="panel-students" hidden>
+            <div class="section-head" style="margin-top:0;">
+              <div class="section-title" style="font-size:15px;">전체 수강생 <span style="font-size:13px; color:var(--text-muted); font-weight:400;">· 42명 (누적)</span></div>
+              <div class="row" style="gap:8px;">
+                <div class="select-wrap" style="width:130px"><div class="select"><span>전체 기수</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+                <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>내보내기</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>상태</th><th>수강생</th><th>기수</th><th>재수강</th><th>연락처</th><th>최근 결제</th><th style="width:40px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="pill pill-success">수강중</span></td>
+                  <td><div class="person-info" style="min-width:0;"><div class="person-name">김수현</div><div class="person-meta">kim@example.com</div></div></td>
+                  <td>슈가보이 <b>2기</b></td>
+                  <td><span class="pill pill-neutral">첫 수강</span></td>
+                  <td class="muted">010-1234-5678</td>
+                  <td class="money">₩ 890,000</td>
+                  <td><button class="row-action">⋯</button></td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-success">수강중</span></td>
+                  <td><div class="person-info" style="min-width:0;"><div class="person-name">이지은</div><div class="person-meta">jieun@example.com</div></div></td>
+                  <td>슈가보이 <b>2기</b></td>
+                  <td><span class="pill pill-purple">재수강</span></td>
+                  <td class="muted">010-2345-6789</td>
+                  <td class="money">₩ 801,000</td>
+                  <td><button class="row-action">⋯</button></td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-info">수강 등록</span></td>
+                  <td><div class="person-info" style="min-width:0;"><div class="person-name">박민수</div><div class="person-meta">minsu@example.com</div></div></td>
+                  <td>슈가보이 <b>2기</b></td>
+                  <td><span class="pill pill-neutral">첫 수강</span></td>
+                  <td class="muted">010-3456-7890</td>
+                  <td class="money" style="color:var(--text-muted)">결제 예정 ₩ 890,000</td>
+                  <td><button class="row-action">⋯</button></td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-success">수강중</span></td>
+                  <td><div class="person-info" style="min-width:0;"><div class="person-name">최유진</div><div class="person-meta">yujin@example.com</div></div></td>
+                  <td>슈가보이 <b>1기</b></td>
+                  <td><span class="pill pill-neutral">첫 수강</span></td>
+                  <td class="muted">010-4567-8901</td>
+                  <td class="money">₩ 890,000</td>
+                  <td><button class="row-action">⋯</button></td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-neutral">수료</span></td>
+                  <td><div class="person-info" style="min-width:0;"><div class="person-name">정하늘</div><div class="person-meta">haneul@example.com</div></div></td>
+                  <td>슈가보이 <b>0기</b></td>
+                  <td><span class="pill pill-neutral">첫 수강</span></td>
+                  <td class="muted">010-5678-9012</td>
+                  <td class="money">₩ 690,000</td>
+                  <td><button class="row-action">⋯</button></td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-danger">환불</span></td>
+                  <td><div class="person-info" style="min-width:0;"><div class="person-name">강도현</div><div class="person-meta">dohyun@example.com</div></div></td>
+                  <td>슈가보이 <b>0기</b></td>
+                  <td><span class="pill pill-neutral">첫 수강</span></td>
+                  <td class="muted">010-6789-0123</td>
+                  <td class="money" style="color:var(--text-muted)">환불 -₩ 690,000</td>
+                  <td><button class="row-action">⋯</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 2px 4px;">
+              <span style="font-size:13px; color:var(--text-muted);">슈가보이 수강생 42명 중 6명 표시</span>
+              <button class="btn">더 보기</button>
+            </div>
+          </div>
+
+          <!-- Panel: 코스 설명 -->
+          <div class="panel" id="panel-desc" hidden>
+            <div class="section-head" style="margin-top:0;">
+              <div class="section-title" style="font-size:15px;">코스 설명 <span style="font-size:13px; color:var(--text-muted); font-weight:400;">(선택)</span></div>
+              <button class="btn btn-primary">저장</button>
+            </div>
+            <p style="font-size:13px; color:var(--text-muted); margin:-6px 0 14px;"><b>수강생에게는 노출되지 않는 내부 메모예요.</b></p>
+            <textarea style="width:100%; min-height:180px; resize:vertical; padding:14px 16px; font-family:inherit; font-size:14px; line-height:1.6; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:10px; box-sizing:border-box;" placeholder="운영·CS에 필요한 특이사항이 있으면 운영진이 여기에 적어둬요. 없으면 비워둬도 됩니다."></textarea>
+            <div class="helper-note" style="margin-top:12px;"><span class="icon">💡</span><span>여긴 내부용 메모예요. 수강생용 코스 소개는 <b>Marketing 랜딩 페이지</b>에서 관리해요.</span></div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<!-- 랜딩 페이지 → 마케팅 콘솔 이동 확인 모달 -->
+<div class="modal-overlay" id="landing-modal" onclick="if(event.target===this)closeLanding()">
+  <div class="modal">
+    <h3>마케팅 콘솔로 이동</h3>
+    <p>랜딩 페이지는 <b>Marketing 콘솔</b>(marketing.classhub.ai)에서 관리해요.<br>지금 이동하시겠습니까?</p>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeLanding()">취소</button>
+      <button class="btn btn-primary" onclick="closeLanding(); /* 실제 구현 시: location.href='https://marketing.classhub.ai' */">이동</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 탭 전환 (랜딩 페이지 탭만 모달)
+  document.querySelectorAll('.tabs .tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      if (tab.dataset.modal === 'landing') { openLanding(); return; }
+      var target = tab.dataset.panel;
+      if (!target) return;
+      document.querySelectorAll('.tabs .tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){ p.hidden = true; });
+      var panel = document.getElementById('panel-' + target);
+      if (panel) panel.hidden = false;
+    });
+  });
+  function openLanding(){ document.getElementById('landing-modal').classList.add('show'); }
+  function closeLanding(){ document.getElementById('landing-modal').classList.remove('show'); }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLanding(); });
+
+  // URL 해시로 특정 탭 열기 (예: course-detail.html#freeclass — 무료강의 상세에서 뒤로가기 시)
+  (function(){
+    var h = (location.hash || '').replace('#','');
+    if (!h) return;
+    var t = document.querySelector('.tabs .tab[data-panel="' + h + '"]');
+    if (t) t.click();
+  })();
+
+  // 기수 상태 인라인 드롭다운
+  (function(){
+    var C={ '준비':'pill-purple','모집중':'pill-warning','강의중':'pill-success','종료':'pill-neutral' };
+    document.querySelectorAll('.status-trigger').forEach(function(tr){
+      tr.addEventListener('click', function(e){ e.stopPropagation(); var m=tr.nextElementSibling; var wasOpen=m.classList.contains('open'); document.querySelectorAll('.status-menu.open').forEach(function(x){x.classList.remove('open');}); if(!wasOpen) m.classList.add('open'); });
+    });
+    document.querySelectorAll('.status-opt').forEach(function(o){
+      o.addEventListener('click', function(e){ e.stopPropagation(); var s=o.dataset.s, menu=o.closest('.status-menu'), tr=menu.previousElementSibling;
+        tr.className='pill '+C[s]+' status-trigger'; tr.innerHTML=s+'<span class="caret"></span>'; menu.classList.remove('open'); });
+    });
+    document.addEventListener('click', function(){ document.querySelectorAll('.status-menu.open').forEach(function(x){x.classList.remove('open');}); });
+  })();
+</script>
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

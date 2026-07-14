@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 다시보기 상세</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-sub); margin-bottom:14px; }
+  .breadcrumb a{ color:var(--text-sub); } .breadcrumb a:hover{ color:var(--primary); }
+  .rp-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:20px; }
+  .rp-stat{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
+  .rp-stat .lbl{ font-size:12.5px; color:var(--text-sub); font-weight:600; }
+  .rp-stat .num{ font-size:26px; font-weight:800; color:var(--text); margin-top:8px; letter-spacing:-0.02em; }
+  .rp-stat .num .u{ font-size:13px; font-weight:600; color:var(--text-muted); margin-left:3px; }
+  .warn{ margin-top:20px; display:flex; gap:12px; align-items:flex-start; background:var(--pink-soft); border:1px solid var(--pink); border-radius:12px; padding:16px 18px; }
+  .warn .wi{ flex-shrink:0; color:var(--pink-text); margin-top:1px; }
+  .warn .wt{ font-size:16px; font-weight:700; color:var(--pink-text); }
+  .warn .ws{ font-size:15px; color:var(--pink-text); opacity:.85; margin-top:4px; }
+  .sec-card{ margin-top:20px; background:var(--surface); border:1px solid var(--border); border-radius:14px; }
+  .sec-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); }
+  .sec-head h2{ font-size:15px; font-weight:800; color:var(--text); }
+  .info-rows{ padding:8px 24px 22px; }
+  .info-row{ display:flex; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); font-size:14px; align-items:flex-start; }
+  .info-row:last-child{ border-bottom:none; }
+  .info-row .k{ width:120px; flex-shrink:0; color:var(--text-muted); font-weight:600; }
+  .info-row .v{ color:var(--text); }
+  .info-row .v a{ color:var(--primary); word-break:break-all; }
+  .info-row .v .muted{ color:var(--text-muted); }
+  .price-hint{ font-size:12px; color:var(--text-muted); margin-top:6px; }
+  /* 탭 바 */
+  .tabbar{ display:flex; align-items:center; gap:4px; border-bottom:1px solid var(--border); padding:0 14px; }
+  .tab{ display:inline-flex; align-items:center; gap:7px; padding:16px 14px; border:none; background:transparent; font-family:inherit; font-size:14.5px; font-weight:700; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .tab:hover{ color:var(--text-sub); }
+  .tab.active{ color:var(--primary); border-bottom-color:var(--primary); }
+  .tab-count{ font-size:12px; font-weight:700; padding:1px 8px; border-radius:999px; background:var(--surface-alt); color:var(--text-sub); }
+  .tab.active .tab-count{ background:var(--primary-soft); color:var(--primary); }
+  .tab-action{ margin-left:auto; }
+  .rp-code-table th, .rp-code-table td{ padding:14px 24px; }
+  .rp-code-table th{ text-transform:none; letter-spacing:0; }
+  .code-copy{ display:inline-flex; align-items:center; justify-content:center; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; font-weight:700; background:#ECECEC; padding:5px 11px; border-radius:6px; color:#1d1d1d; cursor:pointer; }
+  .code-copy:hover{ background:#e3e3e3; }
+  .rcp{ font-weight:600; color:var(--text); }
+  .rcp .sub{ font-size:12px; color:var(--text-muted); font-weight:400; margin-top:2px; }
+  .pay-free{ background:var(--surface-alt); color:var(--text-sub); }
+  .pay-paid{ background:var(--success-soft); color:var(--success-text); }
+  .reg-ok{ background:var(--primary-soft); color:var(--primary); }
+  .reg-no{ background:var(--pink-soft); color:var(--pink-text); }
+  .rowbtn{ width:30px; height:30px; border:1px solid var(--border); border-radius:7px; background:var(--surface); color:var(--text-muted); cursor:pointer; display:inline-grid; place-items:center; }
+  .rowbtn:hover{ background:var(--surface-alt); color:var(--primary); }
+  .rowbtn.del:hover{ color:var(--danger-text); border-color:var(--danger-soft); }
+  .money{ font-weight:700; color:var(--text); }
+
+  /* 코드 발급 모달 */
+  .backdrop{ position:fixed; inset:0; background:rgba(29,29,29,0.5); display:none; place-items:center; padding:20px; z-index:100; }
+  .backdrop.on{ display:grid; }
+  .im-modal{ width:100%; max-width:460px; background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.25); padding:24px 26px 22px; }
+  .im-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+  .im-head h3{ font-size:19px; font-weight:800; color:var(--text); }
+  .im-close{ width:32px; height:32px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; display:grid; place-items:center; border-radius:8px; }
+  .im-close:hover{ background:var(--surface-alt); color:var(--text); }
+  .im-sub{ font-size:13px; color:var(--text-muted); margin-bottom:18px; }
+  .im-field{ margin-bottom:16px; }
+  .im-field label{ display:block; font-size:13.5px; font-weight:700; color:var(--text); margin-bottom:7px; }
+  .im-field label .opt{ color:var(--text-muted); font-weight:500; font-size:11.5px; margin-left:3px; }
+  .im-field input{ width:100%; height:46px; padding:0 14px; border:1px solid var(--border-strong); border-radius:9px; font-size:14px; font-family:inherit; background:#fff; color:var(--text); outline:none; }
+  .im-field input:focus{ border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring); }
+  .im-field input::placeholder{ color:var(--text-placeholder); }
+  .im-hint{ font-size:12px; color:var(--text-muted); margin-top:6px; }
+  .im-amount{ display:flex; gap:8px; }
+  .im-amount input{ flex:1; }
+  .im-quick{ flex-shrink:0; padding:0 12px; height:46px; border:1px solid var(--border-strong); border-radius:9px; background:var(--surface-alt); color:var(--text-sub); font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .im-quick:hover{ color:var(--primary); border-color:var(--primary-line); }
+  .im-foot{ display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
+  .im-foot button{ height:44px; padding:0 22px; border-radius:9px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; }
+  .im-cancel{ background:#fff; border:1px solid var(--border-strong); color:var(--text-sub); }
+  .im-cancel:hover{ background:var(--surface-alt); }
+  .im-submit{ background:var(--primary); border:none; color:#fff; }
+  .im-submit:hover{ background:var(--primary-hover); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div><div class="brand-name">ClassHub</div><div class="brand-sub">Backstage</div></div>
+    </div>
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+  <div>
+    <header class="topbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="검색"></div>
+      <div class="topbar-actions"><button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button><div class="avatar">YJ</div></div>
+    </header>
+    <main class="main">
+      <div class="breadcrumb"><a href="replays.html">← 다시보기</a></div>
+
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">톡딜머니 무료강의 다시보기</h1>
+          <p class="page-sub">슈가보이 코치 · <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">topdealmoney-260629</span></p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-primary" onclick="openIssue()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>코드 발급</button>
+        </div>
+      </div>
+
+      <div class="warn">
+        <svg class="wi" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>
+          <div class="wt">결제했는데 코드를 등록하지 않아 시청하지 못하는 사람이 2명 있습니다.</div>
+          <div class="ws">아래 코드 목록에서 &ldquo;미등록 · 시청 불가&rdquo; 표시를 확인하고 코드를 다시 전달하세요.</div>
+        </div>
+      </div>
+
+      <div class="sec-card">
+        <div class="sec-head">
+          <h2>녹화본 정보</h2>
+          <button class="btn" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>편집</button>
+        </div>
+        <div class="info-rows">
+          <div class="info-row"><span class="k">영상 URL</span><span class="v"><a href="#">https://player.vimeo.com/video/1206046879?h=958facc53d&badge=0&autopause=0&player_id=0&app_id=58479</a></span></div>
+          <div class="info-row"><span class="k">보너스 자료 URL</span><span class="v"><span class="muted">없음</span></span></div>
+          <div class="info-row"><span class="k">판매가</span><span class="v">정가 <b>50,000원</b> &nbsp;/&nbsp; 특가 <b>30,000원</b> <span class="pill pill-neutral" style="margin-left:6px;">수정 불가</span><div class="price-hint">판매가는 수강생이 보는 가격과 직결돼 여기서 바꿀 수 없습니다.</div></span></div>
+        </div>
+      </div>
+
+      <div class="rp-stats">
+        <div class="rp-stat"><div class="lbl">결제자</div><div class="num">17<span class="u">명</span></div></div>
+        <div class="rp-stat"><div class="lbl">무료 배포</div><div class="num">18<span class="u">명</span></div></div>
+        <div class="rp-stat"><div class="lbl">시청자</div><div class="num">22<span class="u">명</span></div></div>
+        <div class="rp-stat"><div class="lbl">매출</div><div class="num">570,000원</div></div>
+      </div>
+
+      <div class="sec-card">
+        <div class="tabbar">
+          <button class="tab active" id="tabbtn-code" onclick="showTab('code')">코드 <span class="tab-count">6</span></button>
+          <button class="tab" id="tabbtn-payer" onclick="showTab('payer')">결제자 <span class="tab-count">17</span></button>
+        </div>
+        <div id="tab-code">
+          <table class="table rp-code-table">
+            <thead><tr><th>등록</th><th>결제</th><th>발급일</th><th>수령인</th><th>시청</th><th>코드 <span style="font-weight:500; font-size:10px; color:var(--text-placeholder);">(클릭 시 복사)</span></th><th style="text-align:right;">관리</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><span class="pill pay-free">무료</span></td>
+                <td>2026. 7. 9.</td>
+                <td><div class="rcp">김지연<div class="sub">wldusdlk@gmail.com</div></div></td>
+                <td class="num">2회</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">RPLDMZMFNKN</span></td>
+                <td><div style="display:flex; gap:6px; justify-content:flex-end;"><button class="rowbtn" title="편집"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="rowbtn del" title="삭제"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><span class="pill pay-paid">유료 50,000원</span></td>
+                <td>2026. 7. 7.</td>
+                <td><div class="rcp">김민주<div class="sub">shjm9596@daum.net</div><div class="sub">010-3369-7343</div></div></td>
+                <td class="num">3회</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">VOD-CH_mra8jiia_2u5p5463</span></td>
+                <td><div style="display:flex; gap:6px; justify-content:flex-end;"><button class="rowbtn" title="편집"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="rowbtn del" title="삭제"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-no">미등록 · 시청 불가</span></td>
+                <td><span class="pill pay-paid">유료 50,000원</span></td>
+                <td>2026. 7. 5.</td>
+                <td><div class="rcp">이수진<div class="sub">sujin.lee@naver.com</div><div class="sub">010-2211-8890</div></div></td>
+                <td class="num">0회</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">VOD-CH_7kd0zpl1_9anb2c00</span></td>
+                <td><div style="display:flex; gap:6px; justify-content:flex-end;"><button class="rowbtn" title="편집"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="rowbtn del" title="삭제"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-no">미등록 · 시청 불가</span></td>
+                <td><span class="pill pay-paid">유료 50,000원</span></td>
+                <td>2026. 7. 4.</td>
+                <td><div class="rcp">박준호<div class="sub">junho.park@gmail.com</div><div class="sub">010-7788-1122</div></div></td>
+                <td class="num">0회</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">VOD-CH_qm4x8s2p_0tz9v6ee</span></td>
+                <td><div style="display:flex; gap:6px; justify-content:flex-end;"><button class="rowbtn" title="편집"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="rowbtn del" title="삭제"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><span class="pill pay-free">무료</span></td>
+                <td>2026. 7. 2.</td>
+                <td><div class="rcp">정하늘<div class="sub">haneul@daum.net</div></div></td>
+                <td class="num">1회</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">RPFREE7Q2XKD</span></td>
+                <td><div style="display:flex; gap:6px; justify-content:flex-end;"><button class="rowbtn" title="편집"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="rowbtn del" title="삭제"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><span class="pill pay-paid">유료 50,000원</span></td>
+                <td>2026. 6. 30.</td>
+                <td><div class="rcp">최민석<div class="sub">minseok.choi@gmail.com</div><div class="sub">010-4455-6677</div></div></td>
+                <td class="num">5회</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">VOD-CH_ab12cd34_5ef6gh78</span></td>
+                <td><div style="display:flex; gap:6px; justify-content:flex-end;"><button class="rowbtn" title="편집"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="rowbtn del" title="삭제"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="tab-payer" style="display:none;">
+          <table class="table rp-code-table">
+            <thead><tr><th>등록 여부</th><th>결제자</th><th>결제일</th><th>결제 금액</th><th>시청</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><div class="rcp">김민주<div class="sub">shjm9596@daum.net</div><div class="sub">010-3369-7343</div></div></td>
+                <td>2026. 7. 7.</td>
+                <td class="money">50,000원</td>
+                <td class="num">3회</td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-no">미등록</span></td>
+                <td><div class="rcp">이수진<div class="sub">sujin.lee@naver.com</div><div class="sub">010-2211-8890</div></div></td>
+                <td>2026. 7. 5.</td>
+                <td class="money">50,000원</td>
+                <td class="num">0회</td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-no">미등록</span></td>
+                <td><div class="rcp">박준호<div class="sub">junho.park@gmail.com</div><div class="sub">010-7788-1122</div></div></td>
+                <td>2026. 7. 4.</td>
+                <td class="money">50,000원</td>
+                <td class="num">0회</td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><div class="rcp">최민석<div class="sub">minseok.choi@gmail.com</div><div class="sub">010-4455-6677</div></div></td>
+                <td>2026. 6. 30.</td>
+                <td class="money">50,000원</td>
+                <td class="num">5회</td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><div class="rcp">한지우<div class="sub">jiwoo.han@gmail.com</div><div class="sub">010-5566-2211</div></div></td>
+                <td>2026. 6. 28.</td>
+                <td class="money">50,000원</td>
+                <td class="num">2회</td>
+              </tr>
+              <tr>
+                <td><span class="pill reg-ok">등록됨</span></td>
+                <td><div class="rcp">오세훈<div class="sub">sehun.oh@naver.com</div><div class="sub">010-9900-3344</div></div></td>
+                <td>2026. 6. 25.</td>
+                <td class="money">50,000원</td>
+                <td class="num">4회</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+function showTab(t){
+  var codeOn = t==='code';
+  document.getElementById('tab-code').style.display = codeOn?'':'none';
+  document.getElementById('tab-payer').style.display = codeOn?'none':'';
+  document.getElementById('tabbtn-code').classList.toggle('active', codeOn);
+  document.getElementById('tabbtn-payer').classList.toggle('active', !codeOn);
+}
+function openIssue(){ document.getElementById('issueModal').classList.add('on'); }
+function closeIssue(){ document.getElementById('issueModal').classList.remove('on'); }
+function openEdit(){ document.getElementById('editModal').classList.add('on'); }
+function closeEdit(){ document.getElementById('editModal').classList.remove('on'); }
+function setAmt(v){ document.getElementById('issAmt').value=v; }
+</script>
+<div class="backdrop" id="editModal">
+  <div class="im-modal">
+    <div class="im-head"><h3>녹화본 정보 편집</h3><button class="im-close" onclick="closeEdit()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="im-sub">톡딜머니 무료강의 녹화본 다시보기</div>
+    <div class="im-field"><label>영상 URL</label><input type="text" value="https://player.vimeo.com/video/1206046879?h=958facc53d"></div>
+    <div class="im-field"><label>보너스 자료 URL <span class="opt">(선택)</span></label><input type="text" placeholder="https://..."></div>
+    <div class="im-field"><label>판매가</label><input type="text" value="정가 50,000원 / 특가 30,000원" disabled style="background:var(--surface-alt); color:var(--text-muted);"><div class="im-hint">판매가는 수강생이 보는 가격과 직결돼 여기서 바꿀 수 없습니다.</div></div>
+    <div class="im-foot"><button class="im-cancel" onclick="closeEdit()">취소</button><button class="im-submit">저장</button></div>
+  </div>
+</div>
+<div class="backdrop" id="issueModal">
+  <div class="im-modal">
+    <div class="im-head"><h3>코드 발급</h3><button class="im-close" onclick="closeIssue()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="im-sub">톡딜머니 무료강의 녹화본 다시보기</div>
+    <div class="im-field"><label>수령인 이름</label><input type="text" placeholder="홍길동"></div>
+    <div class="im-field"><label>이메일</label><input type="email" placeholder="name@example.com"></div>
+    <div class="im-field"><label>전화번호 <span class="opt">(선택)</span></label><input type="text" placeholder="01012345678"><div class="im-hint">나중에 알림으로 코드를 보낼 때 쓰입니다. 지금 비워둬도 발급됩니다.</div></div>
+    <div class="im-field"><label>결제 금액 <span class="opt">(선택)</span></label>
+      <div class="im-amount"><input id="issAmt" type="text" placeholder="비우면 무료 배포"><button class="im-quick" type="button" onclick="setAmt('50,000')">정가 50,000</button><button class="im-quick" type="button" onclick="setAmt('30,000')">특가 30,000</button></div>
+      <div class="im-hint">금액을 넣으면 매출과 함께 기록됩니다. 무료로 드리는 경우 비워두세요.</div>
+    </div>
+    <div class="im-foot"><button class="im-cancel" onclick="closeIssue()">취소</button><button class="im-submit">발급</button></div>
+  </div>
+</div>
+</body>
+</html>

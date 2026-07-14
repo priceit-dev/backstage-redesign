@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 오프라인 결제 등록</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:14px; color:var(--text-sub); margin-bottom:16px; }
+  .breadcrumb a{ color:var(--text-sub); }
+  .breadcrumb a:hover{ color:var(--primary); }
+  .breadcrumb .sep{ color:var(--text-muted); }
+
+  .form-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    overflow:hidden;
+  }
+  .form-sec{ padding:28px 32px; border-bottom:1px solid var(--border); }
+  .form-sec:last-of-type{ border-bottom:none; }
+  .form-sec-head{ margin-bottom:20px; }
+  .form-sec-head h2{ font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .form-sec-head p{ font-size:13.5px; color:var(--text-sub); margin-top:4px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .form-row.single{ grid-template-columns:1fr; }
+  .form-row.triple{ grid-template-columns:1fr 1fr 1fr; }
+  .form-row:last-child{ margin-bottom:0; }
+
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field-label{ font-size:14px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:6px; }
+  .field-label .req{ color:var(--highlight); font-weight:700; }
+  .field-label .opt{ color:var(--text-muted); font-weight:500; font-size:12px; }
+  .field-hint{ font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+  .input, .select{
+    height:44px; padding:0 14px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:var(--surface); color:var(--text);
+    font-size:14.5px; font-family:inherit; outline:none;
+    box-shadow:var(--shadow-xs); transition:.15s;
+    width:100%;
+  }
+  .input:focus, .select:focus{
+    border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring);
+  }
+  .select{ display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; }
+  .select .chev{ width:20px; height:20px; color:var(--text-sub); }
+  .textarea{
+    min-height:80px; padding:12px 14px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:var(--surface); font-size:14.5px; font-family:inherit;
+    outline:none; box-shadow:var(--shadow-xs); resize:vertical;
+    width:100%;
+  }
+  .textarea:focus{ border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring); }
+
+  .radio-group{ display:flex; gap:10px; flex-wrap:wrap; }
+  .radio-card{
+    flex:1; min-width:140px;
+    padding:14px 16px;
+    border:1.5px solid var(--border-strong); border-radius:10px;
+    cursor:pointer; transition:.12s;
+    display:flex; flex-direction:column; gap:0;
+    background:var(--surface);
+  }
+  .radio-card:hover{ border-color:var(--primary); }
+  .radio-card.selected{ border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-ring); }
+  .radio-card .rc-title{ font-size:15px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .radio-card .rc-title .dot{
+    width:16px; height:16px; border-radius:50%; border:2px solid var(--border-strong);
+    flex-shrink:0; background:#fff;
+  }
+  .radio-card.selected .rc-title .dot{
+    border-color:var(--primary);
+    background:radial-gradient(circle, var(--primary) 40%, #fff 45%);
+  }
+  .radio-card .rc-desc{ font-size:12.5px; color:var(--text-muted); padding-left:24px; margin-top:4px; }
+
+  /* Tally match card */
+  .match-card{
+    padding:14px 16px; border:1px solid var(--success);
+    background:var(--success-soft); border-radius:10px;
+    display:flex; align-items:center; gap:12px; margin-top:8px;
+  }
+  .match-card .m-icon{
+    width:36px; height:36px; border-radius:50%;
+    background:var(--success); color:#fff;
+    display:grid; place-items:center; flex-shrink:0;
+  }
+  .match-card .m-info{ flex:1; }
+  .match-card .m-title{ font-size:14px; font-weight:700; color:var(--success-text); }
+  .match-card .m-desc{ font-size:12.5px; color:var(--success-text); opacity:.85; margin-top:2px; }
+  .match-card .m-action{
+    padding:6px 12px; font-size:12.5px; font-weight:700;
+    background:#fff; border:1px solid var(--success); color:var(--success-text);
+    border-radius:6px; cursor:pointer;
+  }
+
+  /* Upload box */
+  .upload-box{
+    padding:20px; border:1.5px dashed var(--border-strong); border-radius:10px;
+    background:var(--surface-alt); display:flex; align-items:center; gap:14px;
+    cursor:pointer; transition:.12s;
+  }
+  .upload-box:hover{ border-color:var(--primary); background:var(--primary-soft); }
+  .upload-box .up-icon{
+    width:40px; height:40px; border-radius:8px;
+    background:var(--surface); border:1px solid var(--border);
+    display:grid; place-items:center; color:var(--primary); flex-shrink:0;
+  }
+  .upload-box .up-info .t{ font-size:14px; font-weight:600; }
+  .upload-box .up-info .d{ font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+
+  .amount-row{
+    display:flex; align-items:baseline; gap:12px;
+    padding:16px 18px; background:var(--surface-alt); border-radius:8px;
+    border:1px solid var(--border);
+  }
+  .amount-row .lbl{ font-size:13px; color:var(--text-muted); }
+  .amount-row .val{ font-size:22px; font-weight:800; color:var(--text); letter-spacing:-0.01em; }
+  .amount-row .sub{ font-size:12.5px; color:var(--text-muted); margin-left:auto; }
+
+  .action-bar{
+    position:sticky; bottom:0; z-index:5;
+    background:var(--surface); border-top:1px solid var(--border);
+    padding:16px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-top:20px;
+    border-radius:0 0 12px 12px;
+  }
+  .action-bar-hint{ font-size:13px; color:var(--text-muted); }
+  .action-buttons{ display:flex; gap:8px; }
+  .helper-note{
+    padding:12px 14px; border-radius:8px;
+    background:var(--info-soft); color:var(--info-text);
+    font-size:13px; font-weight:500;
+    display:flex; gap:10px; align-items:flex-start;
+    margin-top:8px;
+  }
+  .helper-note .icon{ flex-shrink:0; font-size:16px; line-height:1.4; }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <a href="students.html">수강생</a>
+        <span class="sep">›</span>
+        <span style="color:var(--text)">오프라인 결제 등록</span>
+      </div>
+
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">오프라인 결제 등록</h1>
+          <p class="page-sub">계좌이체 · 현금 등 앱 밖에서 결제받은 수강생을 시스템에 등록합니다</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn" onclick="location.href='students.html'">취소</button>
+          <button class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>등록</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <!-- Section 1: 사람 정보 -->
+        <section class="form-sec">
+          <div class="form-sec-head">
+            <h2>사람 정보</h2>
+            <p>수강생 이름과 연락처. 이메일·전화 입력하면 <b>캘린더의 이전 행사 신청 이력</b>을 자동으로 찾아드려요</p>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label">이름 <span class="req">*</span></label>
+              <input class="input" type="text" value="박서연" placeholder="예) 김수현">
+            </div>
+            <div class="field">
+              <label class="field-label">이메일 <span class="req">*</span></label>
+              <input class="input" type="email" value="park@example.com" placeholder="예) example@email.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label">전화번호 <span class="req">*</span></label>
+              <input class="input" type="tel" value="010-4567-8901" placeholder="010-0000-0000">
+            </div>
+            <div class="field">
+              <label class="field-label">유입 경로 <span class="opt">(선택)</span></label>
+              <div class="select">
+                <span>지인 소개</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="field-hint">Tally · 카톡 · 전화 · 지인 · 인스타 · 기타</div>
+            </div>
+          </div>
+
+          <!-- Auto-match card -->
+          <div class="match-card">
+            <div class="m-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="m-info">
+              <div class="m-title">이전 행사 신청 이력 · 1건 발견</div>
+              <div class="m-desc">📅 <b>일당백 무료강의</b> · 2026-07-05 19:00 참석 · Tally 신청일 3일 전 — 이 이력을 연결할까요?</div>
+            </div>
+            <button class="m-action">이력 연결</button>
+          </div>
+        </section>
+
+        <!-- Section 2: 코스·기수 배정 -->
+        <section class="form-sec">
+          <div class="form-sec-head">
+            <h2>코스 · 기수 배정</h2>
+            <p>이 수강생을 어느 코스·기수에 등록할지 선택</p>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label">코스 <span class="req">*</span></label>
+              <div class="select">
+                <span>일당백 (스마트스토어)</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="field-hint">Tally 응답 기준 자동 추천</div>
+            </div>
+            <div class="field">
+              <label class="field-label">기수 <span class="req">*</span></label>
+              <div class="select">
+                <span>3기 (강의중)</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="field-hint">진행 중이거나 곧 시작하는 기수만 표시</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: 결제 정보 (핵심) -->
+        <section class="form-sec">
+          <div class="form-sec-head">
+            <h2>결제 정보</h2>
+            <p>오프라인으로 받은 결제를 기록합니다 · 이 정보가 결제·매출 페이지에도 반영됩니다</p>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label">결제 방식 <span class="req">*</span></label>
+              <div class="radio-group">
+                <div class="radio-card selected">
+                  <div class="rc-title"><span class="dot"></span> 계좌이체</div>
+                  <div class="rc-desc">기업 · 개인 계좌 입금</div>
+                </div>
+                <div class="radio-card">
+                  <div class="rc-title"><span class="dot"></span> 현금</div>
+                  <div class="rc-desc">현장 · 대면 수령</div>
+                </div>
+                <div class="radio-card">
+                  <div class="rc-title"><span class="dot"></span> 기타</div>
+                  <div class="rc-desc">쿠폰 · 대체 결제 등</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label">결제 금액 <span class="req">*</span></label>
+              <input class="input" type="text" value="690,000" placeholder="예) 690,000">
+              <div class="field-hint">기수 정가: ₩ 690,000 · 다르면 할인/차액 반영</div>
+            </div>
+            <div class="field">
+              <label class="field-label">결제일 <span class="req">*</span></label>
+              <input class="input" type="date" value="2026-07-08">
+              <div class="field-hint">실제 입금·수령 날짜</div>
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="field">
+              <label class="field-label">입금자명 / 결제 증빙 정보 <span class="opt">(선택)</span></label>
+              <input class="input" type="text" placeholder='예) 홍길동 · "일당백3기입금" 등 확인 문구'>
+              <div class="field-hint">거래내역과 매칭할 수 있는 정보</div>
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="field">
+              <label class="field-label">결제 증빙 파일 <span class="opt">(선택)</span></label>
+              <div class="upload-box">
+                <div class="up-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="up-info">
+                  <div class="t">파일 업로드 · 통장사본 · 이체 캡처 등</div>
+                  <div class="d">PNG · JPG · PDF (최대 10MB)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="amount-row">
+            <span class="lbl">등록 후 총 결제 합계</span>
+            <span class="val">₩ 690,000</span>
+            <span class="sub">이 기수 매출에 자동 반영</span>
+          </div>
+        </section>
+
+        <!-- Section 4: 상태 · 메모 -->
+        <section class="form-sec">
+          <div class="form-sec-head">
+            <h2>등록 상태 · 메모</h2>
+            <p>초기 수강 상태와 운영 메모</p>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label">등록 상태 <span class="req">*</span></label>
+              <div class="radio-group">
+                <div class="radio-card selected">
+                  <div class="rc-title"><span class="dot"></span> <span class="pill pill-info">수강 등록</span></div>
+                  <div class="rc-desc">결제 완료 · 강의 시작 전</div>
+                </div>
+                <div class="radio-card">
+                  <div class="rc-title"><span class="dot"></span> <span class="pill pill-success">수강중</span></div>
+                  <div class="rc-desc">이미 강의 진행 중</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="field">
+              <label class="field-label">운영 메모 <span class="opt">(선택)</span></label>
+              <textarea class="textarea" placeholder="예) 지인 소개로 참여 · 4주 완주 예상 · 인스타 후기 부탁 가능"></textarea>
+              <div class="field-hint">수강생 상세 페이지에 표시됨. 팀원 공유용</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: 자동 알림 -->
+        <section class="form-sec">
+          <div class="form-sec-head">
+            <h2>자동 알림</h2>
+            <p>등록 완료 후 이 수강생에게 자동으로 발송할 안내</p>
+          </div>
+
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--border);">
+              <div>
+                <div style="font-size:14px; font-weight:600;">등록 확인 알림톡</div>
+                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">"수강 등록이 완료됐어요" 카카오 알림톡</div>
+              </div>
+              <div style="width:44px; height:26px; border-radius:999px; background:var(--primary); position:relative; cursor:pointer;"><span style="position:absolute; top:3px; left:21px; width:20px; height:20px; background:#fff; border-radius:50%;"></span></div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--border);">
+              <div>
+                <div style="font-size:14px; font-weight:600;">Discord 커뮤니티 초대</div>
+                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">Discord 서버 자동 초대 링크 발송</div>
+              </div>
+              <div style="width:44px; height:26px; border-radius:999px; background:var(--primary); position:relative; cursor:pointer;"><span style="position:absolute; top:3px; left:21px; width:20px; height:20px; background:#fff; border-radius:50%;"></span></div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 0;">
+              <div>
+                <div style="font-size:14px; font-weight:600;">강의 시작 D-1 리마인더</div>
+                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">기수 강의 시작 하루 전 자동 발송</div>
+              </div>
+              <div style="width:44px; height:26px; border-radius:999px; background:var(--primary); position:relative; cursor:pointer;"><span style="position:absolute; top:3px; left:21px; width:20px; height:20px; background:#fff; border-radius:50%;"></span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sticky action bar -->
+        <div class="action-bar">
+          <div class="action-bar-hint">
+            <b>박서연</b>을 <b>일당백 3기</b>에 등록 · 결제 <b>₩ 690,000 (계좌이체)</b>
+          </div>
+          <div class="action-buttons">
+            <button class="btn" onclick="location.href='students.html'">취소</button>
+            <button class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>등록</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>

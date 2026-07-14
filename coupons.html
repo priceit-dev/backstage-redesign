@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 쿠폰 관리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .cp-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:20px; }
+  .cp-stat{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; }
+  .cp-stat .lbl{ font-size:12.5px; color:var(--text-sub); font-weight:600; }
+  .cp-stat .num{ font-size:30px; font-weight:800; color:var(--text); letter-spacing:-0.02em; margin-top:8px; }
+  .cp-stat .num .u{ font-size:14px; font-weight:600; color:var(--text-muted); margin-left:3px; }
+
+  .cp-toolbar{ display:flex; align-items:center; gap:10px; margin:18px 0 0; padding-top:4px; }
+  .cp-toolbar .select-wrap{ width:130px; flex-shrink:0; }
+  .cp-search{ flex:1; display:flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid #E8ECF1; border-radius:9px; background:#fff; }
+  .cp-search svg{ width:15px; height:15px; color:var(--text-muted); flex-shrink:0; }
+  .cp-search input{ border:none; outline:none; background:none; font-size:13.5px; font-family:inherit; color:var(--text); width:100%; }
+  .cp-search input::placeholder{ color:#A5ABBB; }
+  .cp-filter{ display:flex; gap:2px; background:#F2F5F9; border-radius:999px; padding:3px; flex-shrink:0; }
+  .cp-filter button{ padding:6px 16px; border:none; background:transparent; border-radius:999px; font-size:13px; font-weight:600; color:#7A8093; cursor:pointer; font-family:inherit; }
+  .cp-filter button.on{ background:#fff; color:var(--primary); box-shadow:var(--shadow-xs); }
+
+  .cp-target{ display:inline-block; font-size:12px; font-weight:600; color:var(--primary); background:var(--primary-soft); padding:3px 9px; border-radius:6px; }
+  .cp-period{ font-size:13px; }
+  .cp-period .end{ font-weight:700; color:var(--text); }
+  .cp-period .sub{ font-size:12px; color:var(--text-muted); margin-top:2px; }
+  .cp-badge{ font-size:11px; font-weight:700; padding:2px 7px; border-radius:5px; margin-left:6px; }
+  .cp-badge.dday{ background:var(--primary-soft); color:var(--primary); }
+  .cp-badge.expire{ background:var(--neutral-soft); color:var(--neutral-text); }
+  .cp-badge.forever{ background:var(--success-soft); color:var(--success-text); }
+  .give-btn{ display:inline-flex; align-items:center; gap:5px; height:30px; padding:0 12px; border:1px solid var(--pink); border-radius:7px; background:var(--pink-soft); color:var(--pink-text); font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .row-edit{ width:30px; height:30px; border:1px solid var(--border); border-radius:7px; background:var(--surface); color:var(--text-muted); cursor:pointer; display:inline-grid; place-items:center; }
+  .row-edit:hover{ background:var(--surface-alt); color:var(--primary); }
+  .row-actions{ display:flex; gap:6px; justify-content:flex-end; }
+  .muted-code{ color:#7A8093; font-size:13.5px; font-weight:500; }
+  .cp-bar{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin:20px 0 0; }
+  .cp-right{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .cp-right .select-wrap{ width:130px; flex-shrink:0; }
+  .cp-summary{ display:flex; align-items:center; gap:12px; padding:2px 0; font-size:14px; color:#4C5261; }
+  .cp-summary b{ color:var(--text); font-weight:700; }
+  .cp-summary .dot{ color:#CFD6DF; }
+  .main .card{ margin-top:18px; }
+  /* 표 — 피그마 정확값 (px:20, th py:12 / td py:14, 컬럼폭 고정) */
+  .cp-table th{ padding:12px 20px; text-transform:none; letter-spacing:0; }
+  .cp-table td{ padding:14px 20px; font-size:14px; }
+  .cp-table th:nth-child(1), .cp-table td:nth-child(1){ width:90px; }
+  .cp-table th:nth-child(2), .cp-table td:nth-child(2){ width:210px; }
+  .cp-table th:nth-child(4), .cp-table td:nth-child(4){ width:120px; }
+  .cp-table th:nth-child(5), .cp-table td:nth-child(5){ width:170px; }
+  /* 쿠폰코드 = 회색 복사칩 (#ECECEC · 볼드 · 테두리 없음) */
+  .code-copy{ display:inline-flex; align-items:center; justify-content:center; font-size:13.5px; font-weight:700; background:#ECECEC; padding:4px 12px; border-radius:6px; color:#1d1d1d; cursor:pointer; }
+  .code-copy:hover{ background:#e3e3e3; }
+  .cp-field{ height:42px; border:1px solid var(--border); border-radius:9px; padding:0 12px; font-size:14px; font-family:inherit; background:var(--surface); color:var(--text); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div><div class="brand-name">ClassHub</div><div class="brand-sub">Backstage</div></div>
+    </div>
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="검색"></div>
+      <div class="topbar-actions"><button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button><div class="avatar">YJ</div></div>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">쿠폰 관리</h1>
+          <p class="page-sub">할인 쿠폰을 생성하고 관리합니다</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-primary" onclick="location.href='coupon-create.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>쿠폰 생성</button>
+        </div>
+      </div>
+
+      <div class="cp-bar">
+        <div class="cp-summary">
+          <span>전체 <b>47개</b></span><span class="dot">·</span>
+          <span>활성 <b style="color:var(--success-text);">10</b></span><span class="dot">·</span>
+          <span>만료 <b style="color:var(--text-muted);">10</b></span><span class="dot">·</span>
+          <span>사용 <b>23회</b></span>
+        </div>
+        <div class="cp-right">
+          <select class="cp-field"><option>쿠폰명</option><option>쿠폰 코드</option><option>코치</option></select>
+          <div class="cp-filter"><button class="on">전체</button><button>활성</button><button>만료</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body" style="padding:0;">
+          <table class="table cp-table">
+            <thead>
+              <tr><th>상태</th><th>대상</th><th>이름</th><th>할인가격</th><th>쿠폰코드 <span style="font-weight:500; font-size:10px; color:var(--text-placeholder);">(클릭 시 복사)</span></th></tr>
+            </thead>
+            <tbody>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-success">활성</span></td>
+                <td><span class="cp-target">? · 1기</span></td>
+                <td>쿠팡 PT 10만원 할인 (설명회)</td>
+                <td class="money">50,000원</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">CPT260709</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-success">활성</span></td>
+                <td><span class="cp-target">슈가보이 · 2기</span></td>
+                <td>슈가보이 2기 (동반할인)</td>
+                <td class="money">100,000원</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">RSB260629</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-success">활성</span></td>
+                <td><span class="cp-target">길잡 · 3기</span></td>
+                <td>(기존수강생) 길잡 테무로드 3기</td>
+                <td class="money">210,000원</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">RGJ260622</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-success">활성</span></td>
+                <td><span class="cp-target">포터 · 1기</span></td>
+                <td>(기존수강생) 포터 점프투토스 1기</td>
+                <td class="money">100,000원</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">RPTR260619</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-success">활성</span></td>
+                <td><span class="cp-target">[TEST] 테스트 코치 · 1기</span></td>
+                <td>테스트코드 쿠폰</td>
+                <td class="money">200,000원</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">TEST8686</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-success">활성</span></td>
+                <td><span class="cp-target">[TEST] 테스트 코치 · 1기</span></td>
+                <td>테스트 쿠폰</td>
+                <td class="money">100,000원</td>
+                <td><span class="muted-code">비공개</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-neutral">만료</span></td>
+                <td><span class="muted">전체</span></td>
+                <td>일당백 5기 10만원 쿠폰</td>
+                <td class="money">100,000원</td>
+                <td><span class="code-copy" onclick="event.stopPropagation()">IDB260611</span></td>
+              </tr>
+              <tr style="cursor:pointer;" onclick="location.href='coupon-detail.html'">
+                <td><span class="pill pill-neutral">만료</span></td>
+                <td><span class="cp-target">[TEST] 테스트 코치 · 1기</span></td>
+                <td>[테스트] claim 결제검증 0611</td>
+                <td class="money">100,000원</td>
+                <td><span class="muted-code">비공개</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  document.querySelectorAll('.cp-filter button').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('.cp-filter button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); }); });
+</script>
+<script src="_select.js"></script>
+<script src="_datepicker.js"></script>
+</body>
+</html>

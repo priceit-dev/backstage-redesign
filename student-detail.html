@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440, initial-scale=1">
+<title>ClassHub Backstage · 김수현</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .breadcrumb{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-sub); margin-bottom:16px; }
+  .breadcrumb a{ color:var(--text-sub); }
+  .breadcrumb a:hover{ color:var(--primary); }
+  .breadcrumb .sep{ color:var(--text-muted); }
+  .profile-head{
+    display:flex; align-items:center; gap:20px; padding:24px;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    margin-bottom:20px;
+  }
+  .avatar-lg{
+    width:72px; height:72px; border-radius:50%;
+    background: linear-gradient(135deg, #D2E1FB, #A5C6FA);
+    color:var(--primary-active); font-weight:700; font-size:24px;
+    display:grid; place-items:center; flex-shrink:0;
+  }
+  .info-strip{
+    display:grid; grid-template-columns: repeat(5, 1fr); gap:0;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:0; margin-bottom:20px; overflow:hidden;
+  }
+  .info-cell{ padding:16px 20px; border-right:1px solid var(--border); }
+  .info-cell:last-child{ border-right:none; }
+  .info-label{ font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; margin-bottom:6px; }
+  .info-value{ font-size:15px; font-weight:600; color:var(--text); }
+  .info-value.money{ font-variant-numeric: tabular-nums; }
+  .tl-item{ display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); }
+  .tl-item:last-child{ border-bottom:none; }
+  .tl-dot{
+    width:32px; height:32px; border-radius:8px; flex-shrink:0;
+    display:grid; place-items:center; font-size:14px;
+  }
+  .tl-body{ flex:1; min-width:0; }
+  .tl-title{ font-size:13.5px; font-weight:600; color:var(--text); }
+  .tl-desc{ font-size:12.5px; color:var(--text-sub); margin-top:2px; }
+  .tl-time{ font-size:11.5px; color:var(--text-muted); }
+  .progress{ height:8px; background:#F2F4F7; border-radius:999px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--primary); border-radius:inherit; }
+  .memo-form{
+    display:flex; gap:8px; padding:16px 20px; background:var(--surface-alt); border-radius:8px;
+  }
+  .memo-form input{
+    flex:1; height:38px; padding:0 12px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    background:#fff; font-size:14px; font-family:inherit; outline:none;
+  }
+  .memo-form input:focus{ border-color:var(--primary); box-shadow:0 0 0 4px var(--primary-ring); }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-name">ClassHub</div>
+        <div class="brand-sub">Backstage</div>
+      </div>
+    </div>
+
+    <button class="side-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      새 코스 등록
+    </button>
+
+    <nav>
+      <div class="side-group">
+        <div class="side-group-label">Main</div>
+        <a href="dashboard.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>대시보드</a>
+        <a href="payments.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>결제<span class="side-badge">42</span></a>
+        <a href="calendar.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>캘린더</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">운영</div>
+        <a href="students.html" class="side-item active"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>수강생<span class="side-badge new">NEW</span></a>
+        <a href="courses.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>코스</a>
+        <a href="coaches.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>코치</a>
+        <a href="programs.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>프로그램</a>
+        <a href="replays.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>다시보기</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">정산</div>
+        <a href="sales.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>매출</a>
+        <a href="coupons.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>쿠폰</a>
+      </div>
+      <div class="side-group">
+        <div class="side-group-label">Support</div>
+        <a href="#" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>문의<span class="side-badge">3</span></a>
+      </div>
+      <div class="side-footer">
+        <a href="settings.html" class="side-item"><svg class="side-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="이름 · 이메일 · 전화 검색">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></button>
+        <div class="avatar">YJ</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <a href="students.html">수강생</a>
+        <span class="sep">›</span>
+        <a href="#">슈가보이 1기</a>
+        <span class="sep">›</span>
+        <span style="color:var(--text)">김수현</span>
+      </div>
+
+      <!-- Profile head -->
+      <div class="profile-head">
+        <div class="avatar-lg">KS</div>
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+            <h1 class="page-title" style="font-size:22px; margin:0;">김수현</h1>
+            <span class="pill pill-success">진행중</span>
+            <span class="pill pill-info">Tally 완료</span>
+          </div>
+          <div style="color:var(--text-sub); font-size:13.5px;">
+            kim@example.com · 010-1234-5678 · 등록 2026-05-12
+          </div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>메시지</button>
+          <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>메모 추가</button>
+          <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>환불 처리</button>
+        </div>
+      </div>
+
+      <!-- Info strip -->
+      <div class="info-strip">
+        <div class="info-cell">
+          <div class="info-label">코스</div>
+          <div class="info-value">슈가보이 1기</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">기수 진행</div>
+          <div class="info-value">3주차 / 4주</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">결제</div>
+          <div class="info-value money">₩ 890,000</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">첫 유입</div>
+          <div class="info-value" style="font-size:14px; font-weight:500;">마진계산기 (Tally)</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">최근 활동</div>
+          <div class="info-value" style="font-size:14px; font-weight:500;">2시간 전</div>
+        </div>
+      </div>
+
+      <!-- Tabs + content -->
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active">개요</div>
+          <div class="tab">Tally 응답 <span class="count">3</span></div>
+          <div class="tab">결제 <span class="count">1</span></div>
+          <div class="tab">수강 진행 <span class="count">3</span></div>
+          <div class="tab">타임라인 <span class="count">18</span></div>
+          <div class="tab">메모 <span class="count">2</span></div>
+        </div>
+
+        <div class="card-body" style="display:grid; grid-template-columns: 2fr 1fr; gap:24px;">
+          <!-- Left col -->
+          <div>
+            <!-- 수강 진행 -->
+            <div class="section-head" style="margin-top:0;">
+              <div class="section-title" style="font-size:15px;">수강 진행률</div>
+              <a href="#" class="link-more">상세보기</a>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+              <div class="progress" style="flex:1;"><div class="progress-fill" style="width:75%"></div></div>
+              <div style="font-size:14px; font-weight:600; color:var(--text);">75%</div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:32px;">
+              <div style="padding:12px 14px; background:var(--surface-alt); border-radius:8px;">
+                <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">1주차</div>
+                <div style="margin-top:4px; font-size:13px; font-weight:600; color:var(--success-text);">✓ 완료</div>
+              </div>
+              <div style="padding:12px 14px; background:var(--surface-alt); border-radius:8px;">
+                <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">2주차</div>
+                <div style="margin-top:4px; font-size:13px; font-weight:600; color:var(--success-text);">✓ 완료</div>
+              </div>
+              <div style="padding:12px 14px; background:var(--primary-soft); border-radius:8px;">
+                <div style="font-size:11px; color:var(--primary); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">3주차 (진행중)</div>
+                <div style="margin-top:4px; font-size:13px; font-weight:600; color:var(--primary);">2/3 과제</div>
+              </div>
+              <div style="padding:12px 14px; background:var(--surface-alt); border-radius:8px;">
+                <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600;">4주차</div>
+                <div style="margin-top:4px; font-size:13px; font-weight:600; color:var(--text-muted);">예정</div>
+              </div>
+            </div>
+
+            <!-- Tally 응답 요약 -->
+            <div class="section-head">
+              <div class="section-title" style="font-size:15px;">Tally 응답 (3건)</div>
+              <a href="#" class="link-more">모두 보기</a>
+            </div>
+            <div class="stack" style="gap:8px;">
+              <div style="padding:14px 16px; border:1px solid var(--border); border-radius:8px;">
+                <div class="row" style="justify-content:space-between; align-items:flex-start;">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:600;">마진계산기 다운로드</div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">2026-05-10 · 리드자석</div>
+                  </div>
+                  <span class="pill pill-neutral">첫 유입</span>
+                </div>
+              </div>
+              <div style="padding:14px 16px; border:1px solid var(--border); border-radius:8px;">
+                <div class="row" style="justify-content:space-between; align-items:flex-start;">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:600;">슈가보이 무료강의 신청</div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">2026-05-11 · 판매경험 3년 · 카카오 톡딜 · 관심 이유: "마진 계산이 어려워서"</div>
+                  </div>
+                  <span class="pill pill-info">무료강의</span>
+                </div>
+              </div>
+              <div style="padding:14px 16px; border:1px solid var(--border); border-radius:8px;">
+                <div class="row" style="justify-content:space-between; align-items:flex-start;">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:600;">1기 정식 등록 폼</div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">2026-05-12 · 결제 완료</div>
+                  </div>
+                  <span class="pill pill-success">등록</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right col: Timeline -->
+          <div>
+            <div class="section-head" style="margin-top:0;">
+              <div class="section-title" style="font-size:15px;">타임라인</div>
+              <a href="#" class="link-more">전체</a>
+            </div>
+            <div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--primary-soft); color:var(--primary);">✎</div>
+                <div class="tl-body">
+                  <div class="tl-title">3주차 과제 2 제출</div>
+                  <div class="tl-desc">"마진 계산 시트 완성본"</div>
+                  <div class="tl-time">2시간 전</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--success-soft); color:var(--success-text);">✓</div>
+                <div class="tl-body">
+                  <div class="tl-title">2주차 완료</div>
+                  <div class="tl-time">3일 전</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--warning-soft); color:var(--warning-text);">!</div>
+                <div class="tl-body">
+                  <div class="tl-title">문의 (Discord)</div>
+                  <div class="tl-desc">"강의 자료 다운로드 안 됩니다"</div>
+                  <div class="tl-time">5일 전 · 응답 완료</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--success-soft); color:var(--success-text);">₩</div>
+                <div class="tl-body">
+                  <div class="tl-title">결제 완료 ₩ 890,000</div>
+                  <div class="tl-desc">신용카드 **** 4831</div>
+                  <div class="tl-time">2026-05-12</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--primary-soft); color:var(--primary);">📝</div>
+                <div class="tl-body">
+                  <div class="tl-title">Tally: 무료강의 신청</div>
+                  <div class="tl-time">2026-05-11</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Memo section -->
+        <div class="card-body" style="border-top:1px solid var(--border);">
+          <div class="section-head" style="margin-top:0;">
+            <div class="section-title" style="font-size:15px;">운영 메모 (2)</div>
+          </div>
+          <div class="stack" style="gap:10px; margin-bottom:16px;">
+            <div style="padding:14px 16px; background:var(--surface-alt); border-radius:8px;">
+              <div class="row" style="justify-content:space-between;">
+                <div style="font-size:13px; font-weight:600;">지은 · 운영</div>
+                <div style="font-size:11.5px; color:var(--text-muted);">3일 전</div>
+              </div>
+              <div style="font-size:13px; color:var(--text-sub); margin-top:6px;">쿠팡 셀러 · 판매 경험 3년. 4주 완주 가능성 높음.</div>
+            </div>
+            <div style="padding:14px 16px; background:var(--surface-alt); border-radius:8px;">
+              <div class="row" style="justify-content:space-between;">
+                <div style="font-size:13px; font-weight:600;">예진 · 마케팅</div>
+                <div style="font-size:11.5px; color:var(--text-muted);">5일 전</div>
+              </div>
+              <div style="font-size:13px; color:var(--text-sub); margin-top:6px;">마진계산기 유입 · 후기 콘텐츠 부탁 가능한 유형.</div>
+            </div>
+          </div>
+          <div class="memo-form">
+            <input type="text" placeholder="메모 추가...">
+            <button class="btn btn-primary">저장</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+  <script src="_select.js"></script>
+  <script src="_datepicker.js"></script>
+</body>
+</html>
