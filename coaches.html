@@ -36,6 +36,7 @@
   .coach-foot .stat{ font-size:12px; color:var(--text-sub); }
   .coach-foot .stat b{ color:var(--text); font-weight:700; }
   .coach-foot a{ color:var(--primary); font-weight:700; font-size:12.5px; }
+  .pill.role-chip{ background:transparent; border:1px solid var(--border-strong); color:var(--text-sub); font-weight:700; }
 </style>
 </head>
 <body>
@@ -101,19 +102,20 @@
       <div class="page-head">
         <div>
           <h1 class="page-title">코치</h1>
-          <p class="page-sub">사람 관리 (CRM) · 코스·기수 상태는 코스 페이지에서 확인</p>
+          <p class="page-sub">사람 관리 (CRM) · 코치 / 강사 / 멘토</p>
         </div>
         <div class="page-actions">
+          <div class="select-wrap" style="width:140px"><div class="select"><span>전체 상태</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="select-menu"><div class="select-option selected"><span>전체 상태</span><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="select-option"><span>활동중</span></div><div class="select-option"><span>보류</span></div><div class="select-option"><span>계약 만료</span></div></div></div>
           <input type="text" placeholder="검색" style="width:180px; height:42px; padding:0 14px; border:1px solid var(--border); border-radius:8px; font-size:14px; font-family:inherit; background:var(--surface); color:var(--text); box-sizing:border-box;">
           <button class="btn btn-primary" onclick="location.href='coach-add.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>새 코치 등록</button>
         </div>
       </div>
 
       <div class="tabs" style="margin-top:20px; padding:0 4px; border-bottom:1px solid var(--border);">
-        <div class="tab active">전체 <span class="count">6</span></div>
-        <div class="tab">활동중 <span class="count">5</span></div>
-        <div class="tab">보류 <span class="count">1</span></div>
-        <div class="tab">계약 만료 <span class="count">0</span></div>
+        <div class="tab active">전체 <span class="count">8</span></div>
+        <div class="tab">코치 <span class="count">6</span></div>
+        <div class="tab">강사 <span class="count">1</span></div>
+        <div class="tab">멘토 <span class="count">1</span></div>
       </div>
 
       <div class="grid grid-3" style="margin-top:24px;">
@@ -121,6 +123,7 @@
         <div class="coach-card" onclick="location.href='coach-detail.html'">
           <div class="coach-head">
             <div class="coach-pills">
+              <span class="pill role-chip">코치</span>
               <span class="pill pill-success">활동중</span>
               <span class="pill pill-warning">톡딜</span>
             </div>
@@ -143,6 +146,7 @@
         <div class="coach-card" onclick="location.href='coach-detail.html'">
           <div class="coach-head">
             <div class="coach-pills">
+              <span class="pill role-chip">코치</span>
               <span class="pill pill-success">활동중</span>
               <span class="pill pill-danger">쿠팡</span>
             </div>
@@ -165,6 +169,7 @@
         <div class="coach-card" onclick="location.href='coach-detail.html'">
           <div class="coach-head">
             <div class="coach-pills">
+              <span class="pill role-chip">코치</span>
               <span class="pill pill-success">활동중</span>
               <span class="pill pill-info">스마트스토어</span>
             </div>
@@ -187,6 +192,7 @@
         <div class="coach-card" onclick="location.href='coach-detail.html'">
           <div class="coach-head">
             <div class="coach-pills">
+              <span class="pill role-chip">코치</span>
               <span class="pill pill-success">활동중</span>
               <span class="pill pill-purple">테무</span>
             </div>
@@ -209,6 +215,7 @@
         <div class="coach-card" onclick="location.href='coach-detail.html'">
           <div class="coach-head">
             <div class="coach-pills">
+              <span class="pill role-chip">코치</span>
               <span class="pill pill-success">활동중</span>
               <span class="pill pill-danger">쿠팡</span>
             </div>
@@ -231,6 +238,7 @@
         <div class="coach-card" onclick="location.href='coach-detail.html'">
           <div class="coach-head">
             <div class="coach-pills">
+              <span class="pill role-chip">코치</span>
               <span class="pill pill-neutral">보류</span>
               <span class="pill pill-neutral">해외 소싱</span>
             </div>
@@ -245,6 +253,51 @@
           </div>
           <div class="coach-foot">
             <span class="stat">등록 코스 <b>1개</b> · 통산 수강생 <b>28명</b></span>
+            <a>프로필 →</a>
+          </div>
+
+        <!-- 7. 강사 (특강) -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill role-chip">강사</span>
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-neutral">특강</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">김도윤</div>
+              <div class="coach-real">외부 특강 강사</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-7890-1234</span>
+            <span class="contact">계약 2026-05-10 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">진행 특강 <b>3회</b> · 통산 수강생 <b>140명</b></span>
+            <a>프로필 →</a>
+          </div>
+        </div>
+
+        <!-- 8. 멘토 (PT) -->
+        <div class="coach-card" onclick="location.href='coach-detail.html'">
+          <div class="coach-head">
+            <div class="coach-pills">
+              <span class="pill role-chip">멘토</span>
+              <span class="pill pill-success">활동중</span>
+              <span class="pill pill-info">PT</span>
+            </div>
+            <div class="coach-name-row">
+              <div class="coach-name">이서준</div>
+              <div class="coach-real">쿠팡 PT 멘토</div>
+            </div>
+          </div>
+          <div class="coach-contacts">
+            <span class="contact">010-8901-2345</span>
+            <span class="contact">계약 2026-03-02 ~</span>
+          </div>
+          <div class="coach-foot">
+            <span class="stat">담당 PT <b>2개</b> · 현재 참여자 <b>13명</b></span>
             <a>프로필 →</a>
           </div>
         </div>
